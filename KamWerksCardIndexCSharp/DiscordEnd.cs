@@ -5,6 +5,7 @@ namespace KamWerksCardIndexCSharp
 {
     internal class DiscordEnd
     {
+        private static bool hasNotionRun = false;
         public static async Task Main(string[] args)
         {
             string KamWerksID = Environment.GetEnvironmentVariable("TUTOR_TOKEN");
@@ -15,13 +16,20 @@ namespace KamWerksCardIndexCSharp
             }
 
             var logger = LoggerFactory.CreateLogger("console");
-            NotionEnd.NotionMain(args);
+            
+            // Run NotionEnd only once on startup
+            if (!hasNotionRun)
+            {
+                hasNotionRun = true;
+                logger.Info("Running NotionEnd for the first time...");
+                await NotionEnd.NotionMain(args);
+            }
 
             DiscordClientBuilder builder = DiscordClientBuilder.CreateDefault(KamWerksID, DiscordIntents.AllUnprivileged | DiscordIntents.MessageContents);
 
             builder.ConfigureEventHandlers
             (
-                b => b.HandleMessageCreated(async (s, e) =>
+                fetchcard => fetchcard.HandleMessageCreated(async (s, e) =>
                 {
                     string message = e.Message.Content;
                     MatchCollection matches = Regex.Matches(message, @"\[\[(.*?)\]\]");
@@ -37,12 +45,36 @@ namespace KamWerksCardIndexCSharp
                         string output = "The Outputs are as follows:";
                         foreach (string content in extractedContents)
                         {
+                            if (true)
+                            {
+                                output += $"\n{content}";
+                            }
+                        }
+                        await e.Message.RespondAsync(output);
+                    }
+                })
+            );
+            builder.ConfigureEventHandlers
+            (
+                fetchsigil => fetchsigil.HandleMessageCreated(async (s, e) =>
+                {
+                    string message = e.Message.Content;
+                    MatchCollection matches = Regex.Matches(message, @"\(\((.*?)\)\)");
+                    List<string> extractedContents = new List<string>();
+
+                    foreach (Match match in matches)
+                    {
+                        extractedContents.Add(match.Groups[1].Value);
+                    }
+
+                    if (extractedContents.Count > 0)
+                    {
+                        string output = "The Outputs are as follows:";
+                        foreach (string content in extractedContents)
+                        {
                             output += $"\n{content}";
                         }
                         await e.Message.RespondAsync(output);
-
-                        // Call NotionEnd when brackets detected
-                        await NotionEnd.NotionMain(args);
                     }
                 })
             );
