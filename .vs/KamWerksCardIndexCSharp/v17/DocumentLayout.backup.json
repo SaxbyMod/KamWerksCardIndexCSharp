@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A98B9F85-E1BB-4D7E-8336-72A40DE3B2F5}|KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp.csproj|c:\\users\\thinc\\source\\repos\\kamwerkscardindexcsharp\\kamwerkscardindexcsharp\\fetchimageandparagraph.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A98B9F85-E1BB-4D7E-8336-72A40DE3B2F5}|KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp.csproj|solutionrelative:kamwerkscardindexcsharp\\fetchimageandparagraph.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A98B9F85-E1BB-4D7E-8336-72A40DE3B2F5}|KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp.csproj|c:\\users\\thinc\\source\\repos\\kamwerkscardindexcsharp\\kamwerkscardindexcsharp\\notionpagefetcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A98B9F85-E1BB-4D7E-8336-72A40DE3B2F5}|KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp.csproj|solutionrelative:kamwerkscardindexcsharp\\notionpagefetcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A98B9F85-E1BB-4D7E-8336-72A40DE3B2F5}|KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp.csproj|c:\\users\\thinc\\source\\repos\\kamwerkscardindexcsharp\\kamwerkscardindexcsharp\\discordend.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A98B9F85-E1BB-4D7E-8336-72A40DE3B2F5}|KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp.csproj|solutionrelative:kamwerkscardindexcsharp\\discordend.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -26,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,7 +50,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
+              "Title": "FetchImageAndParagraph.cs",
+              "DocumentMoniker": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp\\FetchImageAndParagraph.cs",
+              "RelativeDocumentMoniker": "KamWerksCardIndexCSharp\\FetchImageAndParagraph.cs",
+              "ToolTip": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp\\FetchImageAndParagraph.cs*",
+              "RelativeToolTip": "KamWerksCardIndexCSharp\\FetchImageAndParagraph.cs*",
+              "ViewState": "AgIAABMAAAAAAAAAAAAjwC0AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T21:52:22.701Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NotionPageFetcher.cs",
+              "DocumentMoniker": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp\\NotionPageFetcher.cs",
+              "RelativeDocumentMoniker": "KamWerksCardIndexCSharp\\NotionPageFetcher.cs",
+              "ToolTip": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp\\NotionPageFetcher.cs",
+              "RelativeToolTip": "KamWerksCardIndexCSharp\\NotionPageFetcher.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAADAAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-08T20:10:24.766Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Logging.cs",
               "DocumentMoniker": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp\\Logging.cs",
               "RelativeDocumentMoniker": "KamWerksCardIndexCSharp\\Logging.cs",
@@ -55,20 +89,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "NotionEnd.cs",
               "DocumentMoniker": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp\\NotionEnd.cs",
               "RelativeDocumentMoniker": "KamWerksCardIndexCSharp\\NotionEnd.cs",
               "ToolTip": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp\\NotionEnd.cs",
               "RelativeToolTip": "KamWerksCardIndexCSharp\\NotionEnd.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAApwE0AAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-08T13:47:31.907Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Colors.cs",
               "DocumentMoniker": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp\\Colors.cs",
               "RelativeDocumentMoniker": "KamWerksCardIndexCSharp\\Colors.cs",
@@ -81,13 +115,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "DiscordEnd.cs",
               "DocumentMoniker": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp\\DiscordEnd.cs",
               "RelativeDocumentMoniker": "KamWerksCardIndexCSharp\\DiscordEnd.cs",
-              "ToolTip": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp\\DiscordEnd.cs",
-              "RelativeToolTip": "KamWerksCardIndexCSharp\\DiscordEnd.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAA9AAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\Thinc\\source\\repos\\KamWerksCardIndexCSharp\\KamWerksCardIndexCSharp\\DiscordEnd.cs*",
+              "RelativeToolTip": "KamWerksCardIndexCSharp\\DiscordEnd.cs*",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAAwFwAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-08T12:46:19.739Z",
               "EditorCaption": ""

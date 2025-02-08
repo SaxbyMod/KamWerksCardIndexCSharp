@@ -38,6 +38,24 @@
           }
         }
       },
+      "DSharpPlus.Commands/5.0.0-nightly-02454": {
+        "type": "package",
+        "dependencies": {
+          "DSharpPlus": "5.0.0-nightly-02454",
+          "Microsoft.Extensions.Logging": "9.0.0",
+          "Ulid": "1.3.4"
+        },
+        "compile": {
+          "lib/net9.0/DSharpPlus.Commands.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/DSharpPlus.Commands.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "JsonSubTypes/1.8.0": {
         "type": "package",
         "dependencies": {
@@ -319,6 +337,22 @@
         "dsharpplus.png",
         "lib/net9.0/DSharpPlus.dll",
         "lib/net9.0/DSharpPlus.xml"
+      ]
+    },
+    "DSharpPlus.Commands/5.0.0-nightly-02454": {
+      "sha512": "uB0V6r8aD5V7Ru+j1brG4PdoQvleuP/bmrMF24L4ndfT+ax0RcfmWk/V1nAB+vMLCSXCzjAuaHl3p6WySlYZGQ==",
+      "type": "package",
+      "path": "dsharpplus.commands/5.0.0-nightly-02454",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "dsharpplus.commands.5.0.0-nightly-02454.nupkg.sha512",
+        "dsharpplus.commands.nuspec",
+        "dsharpplus.png",
+        "lib/net9.0/DSharpPlus.Commands.dll",
+        "lib/net9.0/DSharpPlus.Commands.xml"
       ]
     },
     "JsonSubTypes/1.8.0": {
@@ -754,6 +788,7 @@
   "projectFileDependencyGroups": {
     "net9.0": [
       "DSharpPlus >= 5.0.0-nightly-02454",
+      "DSharpPlus.Commands >= 5.0.0-nightly-02454",
       "Notion.Net >= 4.2.0"
     ]
   },
@@ -808,6 +843,10 @@
         "targetAlias": "net9.0",
         "dependencies": {
           "DSharpPlus": {
+            "target": "Package",
+            "version": "[5.0.0-nightly-02454, )"
+          },
+          "DSharpPlus.Commands": {
             "target": "Package",
             "version": "[5.0.0-nightly-02454, )"
           },

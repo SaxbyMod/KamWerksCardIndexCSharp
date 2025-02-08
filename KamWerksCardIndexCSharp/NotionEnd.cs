@@ -1,10 +1,14 @@
 ﻿using Notion.Client;
-using Microsoft.Extensions.Logging;
 
 namespace KamWerksCardIndexCSharp
 {
     internal class NotionEnd
     {
+        public static List<string> CtiCardNames { get; private set; } = new();
+        public static List<string> CtiSigilNames { get; private set; } = new();
+        public static Dictionary<string, string> CtiCards { get; private set; } = new();
+        public static Dictionary<string, string> CtiSigils { get; private set; } = new();
+
         public static async Task NotionMain(string[] args)
         {
             // Setup Logging
@@ -24,12 +28,12 @@ namespace KamWerksCardIndexCSharp
 
             // Fetch all pages from Cards database
             var CtiCardPagesList = await FetchAllPageIds(client, "e19c88aa75b44bfe89321bcde8dc7d9f");
-            var CtiCardNames = await FetchPageNames(client, CtiCardPagesList, "Card");
+            CtiCards = await FetchPageNamesAndStore(client, CtiCardPagesList, "Card", CtiCardNames);
             logger.Info($"Total Retrieved Cards: {CtiCardPagesList.Count}");
 
             // Fetch all pages from Sigils database
             var CtiSigilPagesList = await FetchAllPageIds(client, "933d6166cb3f4ee89db51e4cf464f5bd");
-            var CtiSigilNames = await FetchPageNames(client, CtiSigilPagesList, "Sigil");
+            CtiSigils = await FetchPageNamesAndStore(client, CtiSigilPagesList, "Sigil", CtiSigilNames);
             logger.Info($"Total Retrieved Sigils: {CtiSigilPagesList.Count}");
 
             logger.Info("Notion data retrieval completed successfully.");
@@ -38,7 +42,6 @@ namespace KamWerksCardIndexCSharp
         // Fetch all page IDs from a given Notion database
         private static async Task<List<string>> FetchAllPageIds(NotionClient client, string databaseId)
         {
-            var logger = LoggerFactory.CreateLogger("console");
             List<string> pageIds = new List<string>();
             string? nextCursor = null;
 
@@ -54,35 +57,38 @@ namespace KamWerksCardIndexCSharp
                 pageIds.AddRange(response.Results.Select(page => page.Id));
                 nextCursor = response.HasMore ? response.NextCursor : null;
 
-                logger.Info($"Fetched {response.Results.Count} pages from database {databaseId}, continuing...");
-
             } while (!string.IsNullOrEmpty(nextCursor));
 
             return pageIds;
         }
 
-        // Fetch names of pages based on their IDs
-        private static async Task<List<string>> FetchPageNames(NotionClient client, List<string> pageIds, string itemType)
+        // Consolidated method for fetching names and storing them in a list or dictionary
+        private static async Task<Dictionary<string, string>> FetchPageNamesAndStore(NotionClient client, List<string> pageIds, string itemType, List<string> nameList)
         {
             var logger = LoggerFactory.CreateLogger("console");
-            List<string> pageNames = new List<string>();
+            Dictionary<string, string> pageNameDict = new();
 
-            foreach (var id in pageIds)
+            // Parallelized tasks to speed up fetching
+            var tasks = pageIds.Select(async id =>
             {
                 var page = await client.Pages.RetrieveAsync(id);
                 if (page.Properties.TryGetValue("Internal Name", out PropertyValue nameValue) && nameValue is TitlePropertyValue titleProperty)
                 {
                     string nameText = titleProperty.Title.FirstOrDefault()?.PlainText ?? "Unnamed";
-                    pageNames.Add(nameText);
-                    logger.Info($"Retrieved {itemType} Name: {nameText}");
+                    if (nameList != null) nameList.Add(nameText); // Add to list (if not null)
+                    pageNameDict[nameText] = id; // Always add to dictionary
+                    logger.Info($"Retrieved {itemType} Name: {nameText} (ID: {id})");
                 }
                 else
                 {
                     logger.Warning($"Failed to retrieve {itemType} Name for ID: {id}");
                 }
-            }
+            }).ToList();
 
-            return pageNames;
+            // Wait for all tasks to complete
+            await Task.WhenAll(tasks);
+
+            return pageNameDict;
         }
     }
 }
