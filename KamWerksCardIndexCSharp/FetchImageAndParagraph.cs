@@ -38,11 +38,6 @@ namespace KamWerksCardIndexCSharp
                 var item = notionClient.Blocks.RetrieveAsync(i).Result;
                 var gtem = item as ImageBlock;
                 var jtem = gtem.Image;
-                var htem = jtem.Caption;
-                foreach (var j in htem)
-                {
-                    logger.Info(j.PlainText);
-                }
                 Images.Add(gtem);
             }
 

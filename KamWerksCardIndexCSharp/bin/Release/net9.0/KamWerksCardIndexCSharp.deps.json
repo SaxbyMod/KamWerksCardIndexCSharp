@@ -9,6 +9,7 @@
       "KamWerksCardIndexCSharp/1.0.0": {
         "dependencies": {
           "DSharpPlus": "5.0.0-nightly-02454",
+          "DSharpPlus.Commands": "5.0.0-nightly-02454",
           "Notion.Net": "4.2.0"
         },
         "runtime": {
@@ -36,6 +37,19 @@
         },
         "runtime": {
           "lib/net9.0/DSharpPlus.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.0.0"
+          }
+        }
+      },
+      "DSharpPlus.Commands/5.0.0-nightly-02454": {
+        "dependencies": {
+          "DSharpPlus": "5.0.0-nightly-02454",
+          "Microsoft.Extensions.Logging": "9.0.0",
+          "Ulid": "1.3.4"
+        },
+        "runtime": {
+          "lib/net9.0/DSharpPlus.Commands.dll": {
             "assemblyVersion": "5.0.0.0",
             "fileVersion": "5.0.0.0"
           }
@@ -208,6 +222,13 @@
       "sha512": "sha512-ofmr5QefkSfLHx3GUZpqAzMDi0xRbX1lIgDqhMY2m6pNQ3oqYzWMnvvwmagIFYS6Ta2C3l/IBIsH5WdMmtL+uQ==",
       "path": "dsharpplus/5.0.0-nightly-02454",
       "hashPath": "dsharpplus.5.0.0-nightly-02454.nupkg.sha512"
+    },
+    "DSharpPlus.Commands/5.0.0-nightly-02454": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-uB0V6r8aD5V7Ru+j1brG4PdoQvleuP/bmrMF24L4ndfT+ax0RcfmWk/V1nAB+vMLCSXCzjAuaHl3p6WySlYZGQ==",
+      "path": "dsharpplus.commands/5.0.0-nightly-02454",
+      "hashPath": "dsharpplus.commands.5.0.0-nightly-02454.nupkg.sha512"
     },
     "JsonSubTypes/1.8.0": {
       "type": "package",

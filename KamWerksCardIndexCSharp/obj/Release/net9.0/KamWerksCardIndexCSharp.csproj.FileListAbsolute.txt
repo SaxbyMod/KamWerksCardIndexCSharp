@@ -31,3 +31,4 @@ C:\Users\Thinc\source\repos\KamWerksCardIndexCSharp\KamWerksCardIndexCSharp\obj\
 C:\Users\Thinc\source\repos\KamWerksCardIndexCSharp\KamWerksCardIndexCSharp\bin\Release\net9.0\JsonSubTypes.dll
 C:\Users\Thinc\source\repos\KamWerksCardIndexCSharp\KamWerksCardIndexCSharp\bin\Release\net9.0\Notion.Client.dll
 C:\Users\Thinc\source\repos\KamWerksCardIndexCSharp\KamWerksCardIndexCSharp\obj\Release\net9.0\KamWerksCardIndexCSharp.sourcelink.json
+C:\Users\Thinc\source\repos\KamWerksCardIndexCSharp\KamWerksCardIndexCSharp\bin\Release\net9.0\DSharpPlus.Commands.dll

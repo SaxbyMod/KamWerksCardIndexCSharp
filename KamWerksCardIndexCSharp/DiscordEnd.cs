@@ -1,9 +1,8 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
-using DSharpPlus.Commands;
-using System.ComponentModel.Design;
 
 
 namespace KamWerksCardIndexCSharp
@@ -56,54 +55,66 @@ namespace KamWerksCardIndexCSharp
                     }
                 })
             );
-            MessageCreated
+            builder.ConfigureEventHandlers
+            (
+                Commands => Commands.HandleMessageCreated(async (s, e) =>
+                    {
+                        await e.Message.Content.RespondAsync(await CommandInvokerAsync(s, e));
+                    })
+            );
             await builder.ConnectAsync();
             await Task.Delay(-1);
         }
 
         // TODO: Checkout our command library, CommandsNext. It makes this a lot easier!
-        private static async Task CommandInvokerAsync(DiscordClient client, MessageCreatedEventArgs eventArgs)
+        private static async Task<string> CommandInvokerAsync(DiscordClient client, MessageCreatedEventArgs eventArgs)
         {
             var logger = LoggerFactory.CreateLogger("console");
+
             DiscordMessageBuilder messageBuilder = new();
-            if (eventArgs.Message.Content.Equals("!ping", StringComparison.OrdinalIgnoreCase))
+
+            logger.Info("Building Command Base");
+
+            string message = eventArgs.Message.Content;
+            MatchCollection matches = Regex.Matches(message, @"\[\[(.*?)\]\]");
+            List<string> extractedContents = new List<string>();
+
+            logger.Info("Regex Checking;");
+            foreach (Match match in matches)
             {
-                string message = messageBuilder.Content;
-                MatchCollection matches = Regex.Matches(message, @"\[\[(.*?)\]\]");
-                List<string> extractedContents = new List<string>();
+                extractedContents.Add(match.Groups[1].Value.Trim()); // Trim extracted content
+                logger.Info(match.Groups[1].Value.Trim());
+            }
 
-                foreach (Match match in matches)
+            if (extractedContents.Count > 0)
+            {
+                logger.Info("Extracted Contents;");
+                string output = "The Outputs are as follows:";
+                foreach (string content in extractedContents)
                 {
-                    extractedContents.Add(match.Groups[1].Value.Trim()); // Trim extracted content
-                }
-
-                if (extractedContents.Count > 0)
-                {
-                    string output = "The Outputs are as follows:";
-                    foreach (string content in extractedContents)
+                    logger.Info(content);
+                    // Compare with trimmed content and case-insensitive
+                    if (NotionEnd.CtiCardNames.Contains(content, StringComparer.OrdinalIgnoreCase))
                     {
-                        logger.Info(content);
-                        // Compare with trimmed content and case-insensitive
-                        if (NotionEnd.CtiCardNames.Contains(content, StringComparer.OrdinalIgnoreCase))
+                        output += "\ntrue\n";
+                        var carddictinaryvalue = NotionEnd.CtiCards.GetValueOrDefault(content);
+                        var pagefetchresults = await NotionPageFetcher.FetchPageInfo(content, "card");
+                        var textnimages = await FetchImageAndParagraph.FetchTextandImage(pagefetchresults.textBlocks, pagefetchresults.imageUrls);
+                        foreach (var i in textnimages.textBlocks)
                         {
-                            output += "\ntrue\n";
-                            var carddictinaryvalue = NotionEnd.CtiCards.GetValueOrDefault(content);
-                            var pagefetchresults = await NotionPageFetcher.FetchPageInfo(content, "card");
-                            var textnimages = await FetchImageAndParagraph.FetchTextandImage(pagefetchresults.textBlocks, pagefetchresults.imageUrls);
-                            foreach (var i in textnimages.textBlocks)
-                            {
-                                output += i + "\n";
-                            }
+                            output += i + "\n";
+                        }
 
-                        }
-                        else
-                        {
-                            output += "\nfalse";
-                        }
                     }
-                    messageBuilder.Content = output;
-                    messageBuilder.AddFile("LICENSE.txt", File.OpenRead("LICENSE"));
+                    else
+                    {
+                        output += "\nfalse";
+                    }
                 }
+                return message = output;
+            } else
+            {
+                return null;
             }
             // Send the message
             await eventArgs.Message.RespondAsync(messageBuilder);
