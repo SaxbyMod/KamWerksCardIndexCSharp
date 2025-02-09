@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KamWerksCardIndexCSharp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c20d5656884fa4e855bcb137c1157c1ff3f66de6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b77801516a3dd3a844f3870c46a669f6f4f22a21")]
 [assembly: System.Reflection.AssemblyProductAttribute("KamWerksCardIndexCSharp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KamWerksCardIndexCSharp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

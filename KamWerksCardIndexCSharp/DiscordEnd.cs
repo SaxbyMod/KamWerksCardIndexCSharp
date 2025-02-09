@@ -62,7 +62,7 @@ namespace KamWerksCardIndexCSharp
             (
                 Commands => Commands.HandleMessageCreated(async (s, e) =>
                     {
-                        await e.Message.RespondAsync(await CommandInvokerAsync(s, e));
+                        await CommandInvokerAsync(s, e);
                     })
             );
             await builder.ConnectAsync();
@@ -70,7 +70,7 @@ namespace KamWerksCardIndexCSharp
         }
 
         // TODO: Checkout our command library, CommandsNext. It makes this a lot easier!
-        private static async Task<string> CommandInvokerAsync(DiscordClient client, MessageCreatedEventArgs eventArgs)
+        private static async Task CommandInvokerAsync(DiscordClient client, MessageCreatedEventArgs eventArgs)
         {
             var logger = LoggerFactory.CreateLogger("console");
 
@@ -129,14 +129,9 @@ namespace KamWerksCardIndexCSharp
                     {
                         output += "\nfalse";
                     }
+                    messageBuilder.Content = output;
                 }
-                return message = output;
             }
-            else
-            {
-                return null;
-            }
-            // Send the message
             await eventArgs.Message.RespondAsync(messageBuilder);
         }
     }
