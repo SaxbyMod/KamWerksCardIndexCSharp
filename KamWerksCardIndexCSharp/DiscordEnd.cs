@@ -1,7 +1,7 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
-using System.Net.Mime;
+using Notion.Client;
 using System.Text.RegularExpressions;
 
 
@@ -59,7 +59,7 @@ namespace KamWerksCardIndexCSharp
             (
                 Commands => Commands.HandleMessageCreated(async (s, e) =>
                     {
-                        await e.Message.Content.RespondAsync(await CommandInvokerAsync(s, e));
+                        await e.Message.RespondAsync(await CommandInvokerAsync(s, e));
                     })
             );
             await builder.ConnectAsync();
@@ -96,15 +96,29 @@ namespace KamWerksCardIndexCSharp
                     // Compare with trimmed content and case-insensitive
                     if (NotionEnd.CtiCardNames.Contains(content, StringComparer.OrdinalIgnoreCase))
                     {
-                        output += "\ntrue\n";
+                        output += "\ntrue\n```";
                         var carddictinaryvalue = NotionEnd.CtiCards.GetValueOrDefault(content);
                         var pagefetchresults = await NotionPageFetcher.FetchPageInfo(content, "card");
                         var textnimages = await FetchImageAndParagraph.FetchTextandImage(pagefetchresults.textBlocks, pagefetchresults.imageUrls);
+                        int l = 0;
                         foreach (var i in textnimages.textBlocks)
                         {
-                            output += i + "\n";
+                            var j = i.ToString().Replace("\n", "");
+                            logger.Info(j);
+                            l += 1;
+                            var k = l % 2;
+                            if (k == 0)
+                            {
+                                output += j + "\n";
+                            } else
+                            {
+                                output += j;
+                            }
                         }
-
+                        output += "```";
+                        //foreach (var p in textnimages.imageUrls) {
+                        //    messageBuilder.AddFile(p, File.OpenRead(p));
+                        //}
                     }
                     else
                     {
@@ -112,7 +126,8 @@ namespace KamWerksCardIndexCSharp
                     }
                 }
                 return message = output;
-            } else
+            }
+            else
             {
                 return null;
             }
