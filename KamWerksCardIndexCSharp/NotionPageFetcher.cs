@@ -5,14 +5,14 @@ namespace KamWerksCardIndexCSharp
     internal class NotionPageFetcher
     {
         // Fetch page info and print blocks (based on the page's name and type)
-        public static async Task<(List<string> textBlocks, List<string> imageUrls)> FetchPageInfo(string name, string type)
+        public static async Task<(List<string> textBlocks, string val)> FetchPageInfo(string name, string type)
         {
             var logger = LoggerFactory.CreateLogger("console");
             string NotionAPIKey = Environment.GetEnvironmentVariable("NOTION_API_KEY");
             if (string.IsNullOrWhiteSpace(NotionAPIKey))
             {
                 logger.Error("Hey, You missed the Notion API Key Environment Var.");
-                return (new List<string>(), new List<string>());
+                return (new List<string>(), "");
             }
 
             var notionClient = NotionClientFactory.Create(new ClientOptions
@@ -26,7 +26,7 @@ namespace KamWerksCardIndexCSharp
             if (string.IsNullOrEmpty(id))
             {
                 logger.Error($"No page ID found for {name}. Please ensure it's mapped correctly.");
-                return (new List<string>(), new List<string>());
+                return (new List<string>(), "");
             }
 
             // Fetch the page content asynchronously
@@ -40,7 +40,6 @@ namespace KamWerksCardIndexCSharp
 
             // Lists to hold text and image data
             var textBlocks = new List<string>();
-            var imageUrls = new List<string>();
 
             // Query blocks related to the page
             var blocks = await notionClient.Blocks.RetrieveChildrenAsync(id); // Query for blocks related to the page.
@@ -62,18 +61,12 @@ namespace KamWerksCardIndexCSharp
                             var text = myblock2 as ParagraphBlock;
                             textBlocks.Add(text.Id);
                         }
-                        else if (myblock2.GetType().Name == "ImageBlock")
-                        {
-                            // Assuming ImageBlock has an Image URL property, adjust accordingly
-                            var image = myblock2 as ImageBlock;
-                            imageUrls.Add(image.Id);
-                        }
                     }
                 }
             }
 
             // Return the text blocks and image URLs
-            return (textBlocks, imageUrls);
+            return (textBlocks, "");
         }
     }
 }

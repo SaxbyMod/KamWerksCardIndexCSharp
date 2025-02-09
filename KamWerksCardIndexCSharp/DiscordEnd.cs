@@ -1,7 +1,10 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
-using Notion.Client;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 
@@ -99,7 +102,7 @@ namespace KamWerksCardIndexCSharp
                         output += "\ntrue\n```";
                         var carddictinaryvalue = NotionEnd.CtiCards.GetValueOrDefault(content);
                         var pagefetchresults = await NotionPageFetcher.FetchPageInfo(content, "card");
-                        var textnimages = await FetchImageAndParagraph.FetchTextandImage(pagefetchresults.textBlocks, pagefetchresults.imageUrls);
+                        var textnimages = await FetchText.FetchTexts(pagefetchresults.textBlocks);
                         int l = 0;
                         foreach (var i in textnimages.textBlocks)
                         {
@@ -116,9 +119,11 @@ namespace KamWerksCardIndexCSharp
                             }
                         }
                         output += "```";
-                        //foreach (var p in textnimages.imageUrls) {
-                        //    messageBuilder.AddFile(p, File.OpenRead(p));
-                        //}
+                        var imageurl = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/{textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", "")}/Portraits/{textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", "")}.png";
+                        HttpClient httpClient = new HttpClient();
+                        var file = await httpClient.GetStreamAsync(imageurl);
+                        messageBuilder.AddFile($"{content}.png", file);
+                        logger.Info(imageurl);
                     }
                     else
                     {
