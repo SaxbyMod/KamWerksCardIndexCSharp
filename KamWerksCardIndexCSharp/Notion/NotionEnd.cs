@@ -1,4 +1,10 @@
 ﻿using Notion.Client;
+using System.Threading.Tasks;
+using System.Linq;
+using System.Collections.Generic;
+using System;
+
+
 
 namespace KamWerksCardIndexCSharp
 {
@@ -8,6 +14,10 @@ namespace KamWerksCardIndexCSharp
         public static List<string> CtiSigilNames { get; private set; } = new();
         public static Dictionary<string, string> CtiCards { get; private set; } = new();
         public static Dictionary<string, string> CtiSigils { get; private set; } = new();
+        public static List<string> DmcCardNames { get; private set; } = new();
+        public static List<string> DmcSigilNames { get; private set; } = new();
+        public static Dictionary<string, string> DmcCards { get; private set; } = new();
+        public static Dictionary<string, string> DmcSigils { get; private set; } = new();
 
         public static async Task NotionMain(string[] args)
         {
@@ -35,6 +45,15 @@ namespace KamWerksCardIndexCSharp
             var CtiSigilPagesList = await FetchAllPageIds(client, "933d6166cb3f4ee89db51e4cf464f5bd");
             CtiSigils = await FetchPageNamesAndStore(client, CtiSigilPagesList, "Sigil", CtiSigilNames);
             logger.Info($"Total Retrieved Sigils: {CtiSigilPagesList.Count}");
+            
+            var DmcCardPagesList = await FetchAllPageIds(client, "1229bd3134c34f69a369c5ef830bd7a0");
+            DmcCards = await FetchPageNamesAndStore(client, DmcCardPagesList, "Card", DmcCardNames);
+            logger.Info($"Total Retrieved Cards: {DmcCardPagesList.Count}");
+
+            // Fetch all pages from Sigils database
+            var DmcSigilPagesList = await FetchAllPageIds(client, "ae46b70d77e649d78a94d2fc62a886e0");
+            DmcSigils = await FetchPageNamesAndStore(client, DmcSigilPagesList, "Sigil", DmcSigilNames);
+            logger.Info($"Total Retrieved Sigils: {DmcSigilPagesList.Count}");
 
             logger.Info("Notion data retrieval completed successfully.");
         }

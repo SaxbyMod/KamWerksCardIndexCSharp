@@ -1,4 +1,8 @@
-﻿using Notion.Client;
+﻿using System;
+using System.Collections.Generic;
+using Notion.Client;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace KamWerksCardIndexCSharp
 {

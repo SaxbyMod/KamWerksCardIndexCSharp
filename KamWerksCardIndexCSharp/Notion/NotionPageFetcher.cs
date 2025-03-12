@@ -1,11 +1,14 @@
 ﻿using Notion.Client;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System;
 
 namespace KamWerksCardIndexCSharp
 {
     internal class NotionPageFetcher
     {
         // Fetch page info and print blocks (based on the page's name and type)
-        public static async Task<(List<string> textBlocks, string val)> FetchPageInfo(string name, string type)
+        public static async Task<(List<string> textBlocks, string val)> FetchPageInfo(string name, string set, string type)
         {
             var logger = LoggerFactory.CreateLogger("console");
             string NotionAPIKey = Environment.GetEnvironmentVariable("NOTION_API_KEY");
@@ -19,9 +22,16 @@ namespace KamWerksCardIndexCSharp
             {
                 AuthToken = NotionAPIKey,
             });
-
+            string id = "";
             logger.Error($"Fetching information for {type}: {name}...");
-            string id = NotionEnd.CtiCards.GetValueOrDefault(name);
+            if (set == "CTI")
+            {
+	            id = NotionEnd.CtiCards.GetValueOrDefault(name);
+            }
+            if (set == "DMC")
+            {
+	            id = NotionEnd.DmcCards.GetValueOrDefault(name);
+            }
 
             if (string.IsNullOrEmpty(id))
             {
