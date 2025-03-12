@@ -32,7 +32,6 @@ namespace KamWerksCardIndexCSharp
             {
 	            id = NotionEnd.DmcCards.GetValueOrDefault(name);
             }
-
             if (string.IsNullOrEmpty(id))
             {
                 logger.Error($"No page ID found for {name}. Please ensure it's mapped correctly.");

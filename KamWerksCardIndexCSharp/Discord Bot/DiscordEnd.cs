@@ -84,7 +84,6 @@ namespace KamWerksCardIndexCSharp
 			foreach (Match match in matches)
 			{
 				extractedContents.Add(match.Groups[1].Value.Trim()); // Trim extracted content
-				logger.Info(match.Groups[1].Value.Trim());
 			}
 
 			if (extractedContents.Count > 0)
@@ -132,6 +131,8 @@ namespace KamWerksCardIndexCSharp
 												}
 											}
 											output += "```";
+											logger.Info(textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", ""));
+											logger.Info(textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", ""));
 											var imageurl = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/{textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", "")}/Portraits/{textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", "")}.png";
 											HttpClient httpClient = new HttpClient();
 											var file = await httpClient.GetStreamAsync(imageurl);
@@ -174,7 +175,9 @@ namespace KamWerksCardIndexCSharp
 												}
 											}
 											output += "```";
-											var imageurl = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/{textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", "")}/Portraits/{textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", "")}.png";
+											logger.Info(textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", ""));
+											logger.Info(textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", ""));
+											var imageurl = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/{textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", "")}/Portraits/{textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", "")}.png".Replace("'", "").Replace("’", "");
 											HttpClient httpClient = new HttpClient();
 											var file = await httpClient.GetStreamAsync(imageurl);
 											messageBuilder.AddFile($"portrait_{iterator30}.png", file);
@@ -219,6 +222,8 @@ namespace KamWerksCardIndexCSharp
 										}
 									}
 									output += "```";
+									logger.Info(textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", ""));
+									logger.Info(textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", ""));
 									var imageurl = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/{textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", "")}/Portraits/{textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", "")}.png";
 									HttpClient httpClient = new HttpClient();
 									var file = await httpClient.GetStreamAsync(imageurl);
@@ -255,7 +260,10 @@ namespace KamWerksCardIndexCSharp
 										}
 									}
 									output += "```";
-									var imageurl = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/{textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", "")}/Portraits/{textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", "")}.png";
+									logger.Info(textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", ""));
+									logger.Info(textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", ""));
+									var imageurl = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/{textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", "")}/Portraits/{textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", "")}.png".Replace("'", "").Replace("’", "");
+									logger.Info(imageurl);
 									HttpClient httpClient = new HttpClient();
 									var file = await httpClient.GetStreamAsync(imageurl);
 									messageBuilder.AddFile($"portrait_{iterator30}.png", file);

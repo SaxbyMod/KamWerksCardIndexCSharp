@@ -33,7 +33,6 @@ namespace KamWerksCardIndexCSharp
                 foreach (var g in jtem)
                 {
                     var j = g.PlainText;
-                    logger.Info(g.PlainText);
                     TEXT.Add(g.PlainText);
                 }
             }

@@ -40,21 +40,21 @@ namespace KamWerksCardIndexCSharp
             var CtiCardPagesList = await FetchAllPageIds(client, "e19c88aa75b44bfe89321bcde8dc7d9f");
             CtiCards = await FetchPageNamesAndStore(client, CtiCardPagesList, "Card", CtiCardNames);
             logger.Info($"Total Retrieved Cards: {CtiCardPagesList.Count}");
-
+            Thread.Sleep(TimeSpan.FromSeconds(20));
             // Fetch all pages from Sigils database
             var CtiSigilPagesList = await FetchAllPageIds(client, "933d6166cb3f4ee89db51e4cf464f5bd");
             CtiSigils = await FetchPageNamesAndStore(client, CtiSigilPagesList, "Sigil", CtiSigilNames);
             logger.Info($"Total Retrieved Sigils: {CtiSigilPagesList.Count}");
-            
+            Thread.Sleep(TimeSpan.FromSeconds(20));
             var DmcCardPagesList = await FetchAllPageIds(client, "1229bd3134c34f69a369c5ef830bd7a0");
             DmcCards = await FetchPageNamesAndStore(client, DmcCardPagesList, "Card", DmcCardNames);
             logger.Info($"Total Retrieved Cards: {DmcCardPagesList.Count}");
-
+            Thread.Sleep(TimeSpan.FromSeconds(20));
             // Fetch all pages from Sigils database
             var DmcSigilPagesList = await FetchAllPageIds(client, "ae46b70d77e649d78a94d2fc62a886e0");
             DmcSigils = await FetchPageNamesAndStore(client, DmcSigilPagesList, "Sigil", DmcSigilNames);
             logger.Info($"Total Retrieved Sigils: {DmcSigilPagesList.Count}");
-
+            Thread.Sleep(TimeSpan.FromSeconds(20));
             logger.Info("Notion data retrieval completed successfully.");
         }
 
@@ -63,19 +63,17 @@ namespace KamWerksCardIndexCSharp
         {
             List<string> pageIds = new List<string>();
             string? nextCursor = null;
-
             do
             {
                 var queryParams = new DatabasesQueryParameters
                 {
                     StartCursor = nextCursor,
-                    PageSize = 100 // Notion max limit per request
+                    PageSize = 100
                 };
-
                 var response = await client.Databases.QueryAsync(databaseId, queryParams);
                 pageIds.AddRange(response.Results.Select(page => page.Id));
                 nextCursor = response.HasMore ? response.NextCursor : null;
-
+                Thread.Sleep(TimeSpan.FromSeconds(2));
             } while (!string.IsNullOrEmpty(nextCursor));
 
             return pageIds;
