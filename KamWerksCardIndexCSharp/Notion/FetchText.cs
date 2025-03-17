@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Notion.Client;
 using System.Linq;
 using System.Threading.Tasks;
+using KamWerksCardIndexCSharp.Helpers;
 
-namespace KamWerksCardIndexCSharp
+namespace KamWerksCardIndexCSharp.Notion
 {
     internal class FetchText
     {
-        public static async Task<(List<string> textBlocks, string val)> FetchTexts(List<string> textids)
+        public static async Task<(List<string> textBlocks, string val)> FetchTexts (List<string> textids)
         {
             var logger = LoggerFactory.CreateLogger("console");
             string NotionAPIKey = Environment.GetEnvironmentVariable("NOTION_API_KEY");
@@ -36,7 +37,6 @@ namespace KamWerksCardIndexCSharp
                     TEXT.Add(g.PlainText);
                 }
             }
-            Console.WriteLine("Text: " + TEXT.Count());
             return (TEXT, "");
         }
     }

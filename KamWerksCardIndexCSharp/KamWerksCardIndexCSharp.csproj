@@ -11,6 +11,9 @@
     <PackageReference Include="DSharpPlus" Version="5.0.0-nightly-02467" />
     <PackageReference Include="DSharpPlus.Commands" Version="5.0.0-nightly-02467" />
     <PackageReference Include="Notion.Net" Version="4.2.0" />
+    <PackageReference Include="SixLabors.Fonts" Version="2.1.2" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.5" />
   </ItemGroup>
 
 </Project>

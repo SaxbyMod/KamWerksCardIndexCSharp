@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KamWerksCardIndexCSharp
+namespace KamWerksCardIndexCSharp.Helpers
 {
     internal class Colors
     {
