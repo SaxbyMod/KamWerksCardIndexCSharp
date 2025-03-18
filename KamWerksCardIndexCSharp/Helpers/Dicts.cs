@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SixLabors.ImageSharp.ColorSpaces;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace KamWerksCardIndexCSharp.Helpers
 {
@@ -15,5 +16,23 @@ namespace KamWerksCardIndexCSharp.Helpers
 			"TEST",
 			"FANCY"
 		};
+
+		public static Dictionary<string, Shades> TierTempleShades = new Dictionary<string, Shades>();
+		public static async Task defineShades (Rgb Light, Rgb Mid, Rgb Dark, string PalleteName)
+		{
+			Shades Shades = new Shades()
+			{
+				light = Light,
+				mid = Mid,
+				dark = Dark,
+			};
+			TierTempleShades.Add(PalleteName, Shades);
+		}
+	}
+	
+	public class Shades{
+		public Rgba32 light;
+		public Rgba32 mid;
+		public Rgba32 dark;
 	}
 }

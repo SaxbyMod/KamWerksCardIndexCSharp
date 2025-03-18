@@ -5,6 +5,7 @@ using KamWerksCardIndexCSharp.DiscordBot.Outputs;
 using System.Text.RegularExpressions;
 using KamWerksCardIndexCSharp.Helpers;
 using KamWerksCardIndexCSharp.Notion;
+using SixLabors.ImageSharp.ColorSpaces;
 
 namespace KamWerksCardIndexCSharp.DiscordBot
 {
@@ -28,10 +29,20 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 				hasNotionRun = true;
 				logger.Info("Running NotionEnd for the first time...");
 				await NotionEnd.NotionMain(args);
+
+				await Dicts.defineShades(new Rgb(238, 167, 109), new Rgb(229, 158, 105), new Rgb(220, 148, 101), "BasePortrait");
+				await Dicts.defineShades(new Rgb(238, 167, 109), new Rgb(229, 158, 105), new Rgb(220, 148, 101), "CTI-Beast-Common");
+				await Dicts.defineShades(new Rgb(246, 169, 92), new Rgb(242, 151, 99), new Rgb(238, 130, 114), "CTI-Beast-Rare");
+				await Dicts.defineShades(new Rgb(194, 194, 173), new Rgb(173, 186, 160), new Rgb(151, 182, 158), "CTI-Undead-Common");
+				await Dicts.defineShades(new Rgb(203, 195, 135), new Rgb(169, 194, 135), new Rgb(127, 190, 140), "CTI-Undead-Rare");
+				await Dicts.defineShades(new Rgb(178, 219, 220), new Rgb(162, 209, 225), new Rgb(168, 192, 216), "CTI-Tech-Common");
+				await Dicts.defineShades(new Rgb(150, 225, 216), new Rgb(149, 206, 233), new Rgb(157, 183, 246), "CTI-Tech-Rare");
+				await Dicts.defineShades(new Rgb(220, 178, 210), new Rgb(225, 162, 197), new Rgb(220, 147, 179), "CTI-Magicks-Common");
+				await Dicts.defineShades(new Rgb(232, 167, 238), new Rgb(242, 143, 208), new Rgb(255, 123, 165), "CTI-Magicks-Rare");
 			}
 
 			DiscordClientBuilder builder = DiscordClientBuilder.CreateDefault(KamWerksID, DiscordIntents.AllUnprivileged | DiscordIntents.MessageContents);
-
+			/*
 			builder.ConfigureEventHandlers
 			(
 				fetchsigil => fetchsigil.HandleMessageCreated(async (s, e) =>
@@ -56,6 +67,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 					}
 				})
 			);
+			*/
 			builder.ConfigureEventHandlers
 			(
 				Commands => Commands.HandleMessageCreated(
