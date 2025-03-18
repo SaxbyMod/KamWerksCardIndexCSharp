@@ -6,8 +6,9 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 {
 	public class Test
 	{
-		public async static Task<(DiscordMessageBuilder mess, string takeout)> CTI (string[] formattedcontent, DiscordMessageBuilder messageBuilder, int iterator30, string input)
+		public async static Task<(DiscordMessageBuilder mess, string takeout)> CTI (string[] formattedcontent, int iterator30)
 		{
+			DiscordMessageBuilder messageBuilder = new();
 			var logger = LoggerFactory.CreateLogger("console");
 			var output = "```";
 			var carddictinaryvalue = NotionEnd.CtiCards.GetValueOrDefault(formattedcontent[1]);
@@ -37,11 +38,12 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 			var file = await httpClient.GetStreamAsync(imageurl);
 			messageBuilder.AddFile($"portrait_{iterator30}.png", file);
 			logger.Info(imageurl);
-			return (messageBuilder, input + output);
+			return (messageBuilder, output);
 		}
-		public async static Task<(DiscordMessageBuilder mess, string takeout)> DMC (string[] formattedcontent, DiscordMessageBuilder messageBuilder, int iterator30, string input)
+		public async static Task<(DiscordMessageBuilder mess, string takeout)> DMC (string[] formattedcontent, int iterator30)
 		{
 			var logger = LoggerFactory.CreateLogger("console");
+			DiscordMessageBuilder messageBuilder = new();
 			var output = "```";
 			var carddictinaryvalue = NotionEnd.DmcCards.GetValueOrDefault(formattedcontent[1]);
 			var pagefetchresults = await NotionPageFetcher.FetchPageInfo(formattedcontent[1], "DMC", "card");
@@ -64,14 +66,14 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 			}
 			output += "```";
 			logger.Info(textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", ""));
-			logger.Info(textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", ""));
-			var imageurl = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/{textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", "")}/Portraits/{textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", "")}.png".Replace("'", "").Replace("’", "");
+			logger.Info(textnimages.textBlocks[3].TrimStart().Replace(" ", "").Replace("\n", ""));
+			var imageurl = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/{textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", "")}/Portraits/{textnimages.textBlocks[3].TrimStart().Replace(" ", "").Replace("\n", "")}.png".Replace("'", "").Replace("’", "");
 			logger.Info(imageurl);
 			HttpClient httpClient = new HttpClient();
 			var file = await httpClient.GetStreamAsync(imageurl);
 			messageBuilder.AddFile($"portrait_{iterator30}.png", file);
 			logger.Info(imageurl);
-			return (messageBuilder, input + output);
+			return (messageBuilder, output);
 		}
 	}
 }

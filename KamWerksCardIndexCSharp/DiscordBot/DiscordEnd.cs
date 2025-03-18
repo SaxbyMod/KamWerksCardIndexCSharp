@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using KamWerksCardIndexCSharp.Helpers;
 using KamWerksCardIndexCSharp.Notion;
 using SixLabors.ImageSharp.ColorSpaces;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace KamWerksCardIndexCSharp.DiscordBot
 {
@@ -30,15 +31,17 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 				logger.Info("Running NotionEnd for the first time...");
 				await NotionEnd.NotionMain(args);
 
-				await Dicts.defineShades(new Rgb(238, 167, 109), new Rgb(229, 158, 105), new Rgb(220, 148, 101), "BasePortrait");
-				await Dicts.defineShades(new Rgb(238, 167, 109), new Rgb(229, 158, 105), new Rgb(220, 148, 101), "CTI-Beast-Common");
-				await Dicts.defineShades(new Rgb(246, 169, 92), new Rgb(242, 151, 99), new Rgb(238, 130, 114), "CTI-Beast-Rare");
-				await Dicts.defineShades(new Rgb(194, 194, 173), new Rgb(173, 186, 160), new Rgb(151, 182, 158), "CTI-Undead-Common");
-				await Dicts.defineShades(new Rgb(203, 195, 135), new Rgb(169, 194, 135), new Rgb(127, 190, 140), "CTI-Undead-Rare");
-				await Dicts.defineShades(new Rgb(178, 219, 220), new Rgb(162, 209, 225), new Rgb(168, 192, 216), "CTI-Tech-Common");
-				await Dicts.defineShades(new Rgb(150, 225, 216), new Rgb(149, 206, 233), new Rgb(157, 183, 246), "CTI-Tech-Rare");
-				await Dicts.defineShades(new Rgb(220, 178, 210), new Rgb(225, 162, 197), new Rgb(220, 147, 179), "CTI-Magicks-Common");
-				await Dicts.defineShades(new Rgb(232, 167, 238), new Rgb(242, 143, 208), new Rgb(255, 123, 165), "CTI-Magicks-Rare");
+				await Dicts.defineShades(new Rgba32(238, 167, 109, 255), new Rgba32(229, 158, 105, 255), new Rgba32(220, 148, 101, 255), "BasePortrait");
+				await Dicts.defineShades(new Rgba32(238, 167, 109, 255), new Rgba32(229, 158, 105, 255), new Rgba32(220, 148, 101, 255), "CTI-Beast-Common");
+				await Dicts.defineShades(new Rgba32(246, 169, 92, 255), new Rgba32(242, 151, 99, 255), new Rgba32(238, 130, 114, 255), "CTI-Beast-Rare");
+				await Dicts.defineShades(new Rgba32(194, 194, 173, 255), new Rgba32(173, 186, 160, 255), new Rgba32(151, 182, 158, 255), "CTI-Undead-Common");
+				await Dicts.defineShades(new Rgba32(203, 195, 135, 255), new Rgba32(169, 194, 135, 255), new Rgba32(127, 190, 140, 255), "CTI-Undead-Rare");
+				await Dicts.defineShades(new Rgba32(178, 219, 220, 255), new Rgba32(162, 209, 225, 255), new Rgba32(168, 192, 216, 255), "CTI-Tech-Common");
+				await Dicts.defineShades(new Rgba32(150, 225, 216, 255), new Rgba32(149, 206, 233, 255), new Rgba32(157, 183, 246, 255), "CTI-Tech-Rare");
+				await Dicts.defineShades(new Rgba32(220, 178, 210, 255), new Rgba32(225, 162, 197, 255), new Rgba32(220, 147, 179, 255), "CTI-Magicks-Common");
+				await Dicts.defineShades(new Rgba32(232, 167, 238, 255), new Rgba32(242, 143, 208, 255), new Rgba32(255, 123, 165, 255), "CTI-Magicks-Rare");
+				await Dicts.defineShades(new Rgba32(212, 201, 171, 255), new Rgba32(203, 189, 169, 255), new Rgba32(190, 182, 169, 255), "CTI-Extras-Common");
+				await Dicts.defineShades(new Rgba32(242, 213, 131, 255), new Rgba32(238, 189, 116, 255), new Rgba32(216, 169, 134, 255), "CTI-Extras-Rare");
 			}
 
 			DiscordClientBuilder builder = DiscordClientBuilder.CreateDefault(KamWerksID, DiscordIntents.AllUnprivileged | DiscordIntents.MessageContents);
@@ -85,8 +88,6 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 		{
 			var logger = LoggerFactory.CreateLogger("console");
 
-			DiscordMessageBuilder messageBuilder = new();
-
 			logger.Info("Building Command Base");
 
 			string message = eventArgs.Message.Content;
@@ -102,7 +103,6 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 			if (extractedContents.Count > 0)
 			{
 				logger.Info("Extracted Contents;");
-				string output = "The Outputs are as follows:";
 				var iterator30 = 0;
 				foreach (string content in extractedContents)
 				{
@@ -123,20 +123,24 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 									{
 										if (formattedcontent[2] == Dicts.Formatting[0])
 										{
-											var outputTest = await Test.CTI(formattedcontent, messageBuilder, iterator30, output);
-											output = outputTest.takeout;
-											messageBuilder = outputTest.mess;
+											var outputTest = await Test.CTI(formattedcontent, iterator30);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
 										} else if (formattedcontent[2] == Dicts.Formatting[1])
 										{
-											var outputFancy = await FANCY.CTI(messageBuilder, iterator30, output, formattedcontent);
-											output = outputFancy.takeout;
-											messageBuilder = outputFancy.mess;
+											var outputFancy = await FANCY.CTI(iterator30, formattedcontent);
+											var messageOutput = outputFancy.mess;
+											messageOutput.Content = outputFancy.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
 										}
 									}
 								}
 								else
 								{
-									output += $"\n {formattedcontent[1]} was not found, try again!";
+									DiscordMessageBuilder messageBuilder = new();
+									messageBuilder.Content = $"\n {formattedcontent[1]} was not found, try again!";
+									await eventArgs.Message.RespondAsync(messageBuilder);
 								}
 							}
 							else if (formattedcontent[0] == "DMC")
@@ -147,9 +151,10 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 									{
 										if (formattedcontent[2] == Dicts.Formatting[0])
 										{
-											var outputTest = await Test.DMC(formattedcontent, messageBuilder, iterator30, output);
-											output = outputTest.takeout;
-											messageBuilder = outputTest.mess;
+											var outputTest = await Test.DMC(formattedcontent, iterator30);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
 										} else if (formattedcontent[2] == Dicts.Formatting[1])
 										{
 											
@@ -158,7 +163,9 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 								}
 								else
 								{
-									output += $"\n {formattedcontent[1]} was not found, try again!";
+									DiscordMessageBuilder messageBuilder = new();
+									messageBuilder.Content = $"\n {formattedcontent[1]} was not found, try again!";
+									await eventArgs.Message.RespondAsync(messageBuilder);
 								}
 							}
 						}
@@ -172,35 +179,39 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 								// Compare with trimmed content and case-insensitive
 								if (NotionEnd.CtiCardNames.Contains(formattedcontent[1], StringComparer.OrdinalIgnoreCase))
 								{
-									var outputTest = await Test.CTI(formattedcontent, messageBuilder, iterator30, output);
-									output = outputTest.takeout;
-									messageBuilder = outputTest.mess;
+									var outputTest = await Test.CTI(formattedcontent, iterator30);
+									var messageOutput = outputTest.mess;
+									messageOutput.Content = outputTest.takeout;
+									await eventArgs.Message.RespondAsync(messageOutput);
 								}
 								else
 								{
-									output += $"\n {formattedcontent[1]} was not found, try again!";
+									DiscordMessageBuilder messageBuilder = new();
+									messageBuilder.Content = $"\n {formattedcontent[1]} was not found, try again!";
+									await eventArgs.Message.RespondAsync(messageBuilder);
 								}
 							}
 							else if (formattedcontent[0] == "DMC")
 							{
 								if (NotionEnd.DmcCardNames.Contains(formattedcontent[1], StringComparer.OrdinalIgnoreCase))
 								{
-									var outputTest = await Test.DMC(formattedcontent, messageBuilder, iterator30, output);
-									output = outputTest.takeout;
-									messageBuilder = outputTest.mess;
+									var outputTest = await Test.DMC(formattedcontent, iterator30);
+									var messageOutput = outputTest.mess;
+									messageOutput.Content = outputTest.takeout;
+									await eventArgs.Message.RespondAsync(messageOutput);
 								}
 								else
 								{
-									output += $"\n {formattedcontent[1]} was not found, try again!";
+									DiscordMessageBuilder messageBuilder = new();
+									messageBuilder.Content = $"\n {formattedcontent[1]} was not found, try again!";
+									await eventArgs.Message.RespondAsync(messageBuilder);
 								}
 							}
 						}
 					}
 					iterator30++;
 				}
-				messageBuilder.Content = output;
 			}
-			await eventArgs.Message.RespondAsync(messageBuilder);
 			return;
 		}
 	}

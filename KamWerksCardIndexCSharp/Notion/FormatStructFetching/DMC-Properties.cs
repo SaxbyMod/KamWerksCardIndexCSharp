@@ -10,7 +10,7 @@ using TitleProperty = KamWerksCardIndexCSharp.Notion.Helper_Methods.TitlePropert
 
 namespace KamWerksCardIndexCSharp.Notion.FormatStructFetching
 {
-	public class CTI_Properties
+	public class DMC_Propeties
 	{
 		public async static Task<List<string>> FetchPageProperties (string name, string set, string type)
 		{
@@ -30,7 +30,7 @@ namespace KamWerksCardIndexCSharp.Notion.FormatStructFetching
 			string id = "";
 			logger.Error($"Fetching information for {type}: {name}...");
 
-			id = NotionEnd.CtiCards.GetValueOrDefault(name);
+			id = NotionEnd.DmcCards.GetValueOrDefault(name);
 			if (string.IsNullOrEmpty(id))
 			{
 				logger.Error($"No page ID found for {name}. Please ensure it's mapped correctly.");
@@ -48,6 +48,7 @@ namespace KamWerksCardIndexCSharp.Notion.FormatStructFetching
 			page.Properties.TryGetValue("Name", out var notionName);
 			page.Properties.TryGetValue("Temple", out var temple);
 			page.Properties.TryGetValue("Rarity", out var ratity);
+			page.Properties.TryGetValue("Tribes", out var tribes);
 			page.Properties.TryGetValue("Cost", out var cost);
 			page.Properties.TryGetValue("Power", out var power);
 			page.Properties.TryGetValue("Health", out var health);
@@ -66,6 +67,7 @@ namespace KamWerksCardIndexCSharp.Notion.FormatStructFetching
 			Properties.Add("Notion Name", notionName);
 			Properties.Add("Temple", temple);
 			Properties.Add("Rarity", ratity);
+			Properties.Add("Rarity", tribes);
 			Properties.Add("Cost", cost);
 			Properties.Add("Power", power);
 			Properties.Add("Health", health);
