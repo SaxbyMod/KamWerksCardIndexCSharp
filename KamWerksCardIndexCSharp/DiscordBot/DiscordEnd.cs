@@ -157,7 +157,10 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 											await eventArgs.Message.RespondAsync(messageOutput);
 										} else if (formattedcontent[2] == Dicts.Formatting[1])
 										{
-											
+											var outputTest = await FANCY.DMC(iterator30, formattedcontent);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
 										}
 									}
 								}
@@ -179,7 +182,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 								// Compare with trimmed content and case-insensitive
 								if (NotionEnd.CtiCardNames.Contains(formattedcontent[1], StringComparer.OrdinalIgnoreCase))
 								{
-									var outputTest = await Test.CTI(formattedcontent, iterator30);
+									var outputTest = await FANCY.CTI(iterator30, formattedcontent);
 									var messageOutput = outputTest.mess;
 									messageOutput.Content = outputTest.takeout;
 									await eventArgs.Message.RespondAsync(messageOutput);
@@ -195,7 +198,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 							{
 								if (NotionEnd.DmcCardNames.Contains(formattedcontent[1], StringComparer.OrdinalIgnoreCase))
 								{
-									var outputTest = await Test.DMC(formattedcontent, iterator30);
+									var outputTest = await FANCY.DMC(iterator30, formattedcontent);
 									var messageOutput = outputTest.mess;
 									messageOutput.Content = outputTest.takeout;
 									await eventArgs.Message.RespondAsync(messageOutput);

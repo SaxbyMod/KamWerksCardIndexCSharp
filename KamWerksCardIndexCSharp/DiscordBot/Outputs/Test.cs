@@ -67,7 +67,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 			output += "```";
 			logger.Info(textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", ""));
 			logger.Info(textnimages.textBlocks[3].TrimStart().Replace(" ", "").Replace("\n", ""));
-			var imageurl = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/{textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", "")}/Portraits/{textnimages.textBlocks[3].TrimStart().Replace(" ", "").Replace("\n", "")}.png".Replace("'", "").Replace("’", "");
+			var imageurl = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/{textnimages.textBlocks[1].TrimStart().Replace(" ", "%20").Replace("\n", "")}/Portraits/{textnimages.textBlocks[3].TrimStart().Replace(" ", "%20").Replace("\n", "")}.png".Replace("'", "").Replace("’", "");
 			logger.Info(imageurl);
 			HttpClient httpClient = new HttpClient();
 			var file = await httpClient.GetStreamAsync(imageurl);

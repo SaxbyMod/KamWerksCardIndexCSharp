@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using KamWerksCardIndexCSharp.Helpers;
 using KamWerksCardIndexCSharp.Notion.Helper_Methods;
+using MultiSelectProperty = KamWerksCardIndexCSharp.Notion.Helper_Methods.MultiSelectProperty;
 using RichTextProperty = KamWerksCardIndexCSharp.Notion.Helper_Methods.RichTextProperty;
 using SelectProperty = KamWerksCardIndexCSharp.Notion.Helper_Methods.SelectProperty;
 using TitleProperty = KamWerksCardIndexCSharp.Notion.Helper_Methods.TitleProperty;
@@ -67,7 +68,7 @@ namespace KamWerksCardIndexCSharp.Notion.FormatStructFetching
 			Properties.Add("Notion Name", notionName);
 			Properties.Add("Temple", temple);
 			Properties.Add("Rarity", ratity);
-			Properties.Add("Rarity", tribes);
+			Properties.Add("Tribes", tribes);
 			Properties.Add("Cost", cost);
 			Properties.Add("Power", power);
 			Properties.Add("Health", health);
@@ -103,6 +104,11 @@ namespace KamWerksCardIndexCSharp.Notion.FormatStructFetching
 				{
 					var urlProperty = await URLProperty.GetPropertyAsString(property.Value);
 					properties.Add(urlProperty);
+				}
+				if (property.Value.Type == PropertyValueType.MultiSelect)
+				{
+					var multiselectProperty = await MultiSelectProperty.GetPropertyAsString(property.Value);
+					properties.Add(multiselectProperty);
 				}
 			}
 			

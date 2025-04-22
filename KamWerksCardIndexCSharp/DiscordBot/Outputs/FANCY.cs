@@ -403,24 +403,24 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 		{
 			var logger = LoggerFactory.CreateLogger("console");
 			DiscordMessageBuilder messageBuilder = new();
-			var ctiProperties = await CTI_Properties.FetchPageProperties(formattedcontent[1], formattedcontent[0], "Card");
+			var dmcProperties = await DMC_Propeties.FetchPageProperties(formattedcontent[1], formattedcontent[0], "Card");
 
-			foreach (var value in ctiProperties)
+			foreach (var value in dmcProperties)
 			{
 				logger.Info($"FANCY: {value}");
 			}
 
 			var BaseEmbedURL = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/BaseCardEmbed.png";
-			var PortraitURLBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Portraits/";
-			var NotionPortraitURLBase = "https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/Custom%20TCG%20Inscryption/Portraits/";
-			var NotionSigilURLBase = "https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/Custom%20TCG%20Inscryption/Sigils/";
+			var PortraitURLBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/DMC/Portraits/";
+			var NotionPortraitURLBase = "https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/Desafts%20Mod%20(CTI)/Portraits/";
+			var NotionSigilURLBase = "https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/Desafts%20Mod%20(CTI)/Sigils/";
 			var BlankSigil = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/BlankSigil.png";
 			var PortraitBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/BasePortrait.png";
 			var RareStreak = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/RareTerrainStreak.png";
 			var FontURL = "https://github.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/raw/refs/heads/main/heavyweight.ttf";
-			var NumBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Costs/Numbers/";
-			var CostX = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Costs/X.png";
-			var CostBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Costs/";
+			var NumBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/DMC/Costs/Numbers/";
+			var CostX = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/DMC/Costs/X.png";
+			var CostBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/DMC/Costs/";
 
 			HttpClient httpClient = new();
 			httpClient.DefaultRequestHeaders.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue
@@ -444,14 +444,14 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 			}
 			catch (HttpRequestException)
 			{
-				Portrait = await httpClient.GetStreamAsync(NotionPortraitURLBase + formattedcontent[1].TrimStart().Replace(" ", "").Replace("\n", "") + ".png");
+				Portrait = await httpClient.GetStreamAsync(NotionPortraitURLBase + formattedcontent[1].TrimStart().Replace(" ", "%20").Replace("\n", "") + ".png");
 			}
 
-			if (!string.IsNullOrWhiteSpace(ctiProperties[10]))
+			if (!string.IsNullOrWhiteSpace(dmcProperties[11]))
 			{
 				try
 				{
-					string sigil1Name = ctiProperties[10].TrimStart().Replace(" ", "%20").Replace("\n", "");
+					string sigil1Name = dmcProperties[11].TrimStart().Replace(" ", "%20").Replace("\n", "");
 					Sigil1 = await httpClient.GetStreamAsync(NotionSigilURLBase + sigil1Name + ".png");
 				}
 				catch (HttpRequestException)
@@ -466,11 +466,11 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 				Sigil1 = await httpClient.GetStreamAsync(BlankSigil);
 			}
 
-			if (!string.IsNullOrWhiteSpace(ctiProperties[11]))
+			if (!string.IsNullOrWhiteSpace(dmcProperties[12]))
 			{
 				try
 				{
-					string sigil2Name = ctiProperties[11].TrimStart().Replace(" ", "%20").Replace("\n", "");
+					string sigil2Name = dmcProperties[12].TrimStart().Replace(" ", "%20").Replace("\n", "");
 					Sigil2 = await httpClient.GetStreamAsync(NotionSigilURLBase + sigil2Name + ".png");
 				}
 				catch (HttpRequestException)
@@ -485,7 +485,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 				Sigil2 = await httpClient.GetStreamAsync(BlankSigil);
 			}
 
-			var costPieces = ctiProperties[5].Split(", ").ToList();
+			var costPieces = dmcProperties[6].Split(", ").ToList();
 
 			List<Image> costs = new List<Image>();
 
@@ -512,7 +512,15 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 				}
 
 				string costNum = parts[0]; // First part is the number (e.g., "1")
-				string costType = parts[1]; // Second part is the main type (e.g., "Sapphire")
+				string costType = "";
+				if (parts[1] == "Shattered")
+				{
+					costType = parts[1] + "%20" + parts[2];
+				}
+				else
+				{
+					costType = parts[1]; // Second part is the main type (e.g., "Sapphire")
+				}
 
 				// Now fetch the streams
 				CostNum = await httpClient.GetStreamAsync($"{NumBase}{costNum}.png");
@@ -612,12 +620,20 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 
 			image.Mutate(img =>
 				{
-					img.DrawText(optionsTitle, ctiProperties[2], Color.White);
-					img.DrawText(optionsNormal, $"{ctiProperties[3]}, {ctiProperties[4]}", Color.White);
-					img.DrawText(optionsPower, ctiProperties[6], Color.White);
-					img.DrawText(optionsHealth, ctiProperties[7], Color.White);
-					img.DrawText(optionsSubText, ctiProperties[8], Color.White);
-					img.DrawText(optionsSubSubText, $"{ctiProperties[1]}; Artist(s): {ctiProperties[14]}", Color.White);
+					img.DrawText(optionsTitle, dmcProperties[2], Color.White);
+					var tribes = dmcProperties[5].Replace("None", "");
+					img.DrawText(optionsNormal, $"{dmcProperties[3]}, {dmcProperties[4]}, {tribes}", Color.White);
+					img.DrawText(optionsPower, dmcProperties[7], Color.White);
+					img.DrawText(optionsHealth, dmcProperties[8], Color.White);
+					img.DrawText(optionsSubText, dmcProperties[9], Color.White);
+					if (!string.IsNullOrWhiteSpace(dmcProperties[15]))
+					{
+						img.DrawText(optionsSubSubText, $"{dmcProperties[1]}; Artist(s): {dmcProperties[15]}", Color.White);
+					}
+					else
+					{
+						img.DrawText(optionsSubSubText, $"{dmcProperties[1]}; Artist(s): N/A", Color.White);
+					}
 					portraitImage.Mutate(img =>
 						{
 							if (portraitImage.Width == 860 && portraitImage.Height == 650)
@@ -632,17 +648,17 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 								Rgba32 baseLight = Dicts.TierTempleShades["BasePortrait"].light;
 								Rgba32 baseMid = Dicts.TierTempleShades["BasePortrait"].mid;
 								Rgba32 baseDark = Dicts.TierTempleShades["BasePortrait"].dark;
-								Rgba32 commonLight = Dicts.TierTempleShades[$"CTI-{ctiProperties[3]}-Common"].light;
-								Rgba32 commonMid = Dicts.TierTempleShades[$"CTI-{ctiProperties[3]}-Common"].mid;
-								Rgba32 commonDark = Dicts.TierTempleShades[$"CTI-{ctiProperties[3]}-Common"].dark;
-								Rgba32 rareLight = Dicts.TierTempleShades[$"CTI-{ctiProperties[3]}-Rare"].light;
-								Rgba32 rareMid = Dicts.TierTempleShades[$"CTI-{ctiProperties[3]}-Rare"].mid;
-								Rgba32 rareDark = Dicts.TierTempleShades[$"CTI-{ctiProperties[3]}-Rare"].dark;
+								Rgba32 commonLight = Dicts.TierTempleShades[$"CTI-{dmcProperties[3]}-Common"].light;
+								Rgba32 commonMid = Dicts.TierTempleShades[$"CTI-{dmcProperties[3]}-Common"].mid;
+								Rgba32 commonDark = Dicts.TierTempleShades[$"CTI-{dmcProperties[3]}-Common"].dark;
+								Rgba32 rareLight = Dicts.TierTempleShades[$"CTI-{dmcProperties[3]}-Rare"].light;
+								Rgba32 rareMid = Dicts.TierTempleShades[$"CTI-{dmcProperties[3]}-Rare"].mid;
+								Rgba32 rareDark = Dicts.TierTempleShades[$"CTI-{dmcProperties[3]}-Rare"].dark;
 								portraitBase.Mutate(ctx =>
 								{
 									var imageFrame = portraitBase.Frames.RootFrame; // Get the root frame (ImageFrame<Rgba32>)
 									
-									if (ctiProperties[3] == "Extras" && (ctiProperties[4] == "Rare" || ctiProperties[4] == "Talking"))
+									if (dmcProperties[3] == "Extras" && (dmcProperties[4] == "Rare" || dmcProperties[4] == "Talking"))
 									{
 										ctx.DrawImage(rareStreak, new Point(0, 0), 1.0f);
 									}
@@ -655,33 +671,33 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 										{
 											if (pixelRow[x] == baseLight)
 											{
-												if (ctiProperties[4] == "Common" || ctiProperties[4] == "Side-Deck" || ctiProperties[4] == "Common (Joke Card)")
+												if (dmcProperties[4] == "Common" || dmcProperties[4] == "Side-Deck" || dmcProperties[4] == "Common (Joke Card)")
 												{
 													pixelRow[x] = commonLight;
 												}
-												else if (ctiProperties[4] == "Rare" || ctiProperties[4] == "Talking")
+												else if (dmcProperties[4] == "Rare" || dmcProperties[4] == "Talking")
 												{
 													pixelRow[x] = rareLight;
 												}
 											}
 											if (pixelRow[x] == baseMid)
 											{
-												if (ctiProperties[4] == "Common" || ctiProperties[4] == "Side-Deck" || ctiProperties[4] == "Common (Joke Card)")
+												if (dmcProperties[4] == "Common" || dmcProperties[4] == "Side-Deck" || dmcProperties[4] == "Common (Joke Card)")
 												{
 													pixelRow[x] = commonMid;
 												}
-												else if (ctiProperties[4] == "Rare" || ctiProperties[4] == "Talking")
+												else if (dmcProperties[4] == "Rare" || dmcProperties[4] == "Talking")
 												{
 													pixelRow[x] = rareMid;
 												}
 											}
 											if (pixelRow[x] == baseDark)
 											{
-												if (ctiProperties[4] == "Common" || ctiProperties[4] == "Side-Deck" || ctiProperties[4] == "Common (Joke Card)")
+												if (dmcProperties[4] == "Common" || dmcProperties[4] == "Side-Deck" || dmcProperties[4] == "Common (Joke Card)")
 												{
 													pixelRow[x] = commonDark;
 												}
-												else if (ctiProperties[4] == "Rare" || ctiProperties[4] == "Talking")
+												else if (dmcProperties[4] == "Rare" || dmcProperties[4] == "Talking")
 												{
 													pixelRow[x] = rareDark;
 												}
@@ -755,27 +771,27 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 			await image.SaveAsync(stream, PngFormat.Instance);
 			stream.Position = 0;
 			var output = "To fetch the sigils associated do the following: \n";
-			if (ctiProperties[10] != null)
+			if (dmcProperties[11] != null)
 			{
-				output += $"{{{{CTI;{ctiProperties[10]};FANCY}}}}\n";
+				output += $"{{{{CTI;{dmcProperties[11]};FANCY}}}}\n";
 			}
-			if (ctiProperties[11] != null)
+			if (dmcProperties[12] != null)
 			{
-				output += $"{{{{CTI;{ctiProperties[11]};FANCY}}}}\n";
+				output += $"{{{{CTI;{dmcProperties[12]};FANCY}}}}\n";
 			}
-			if (ctiProperties[12] != null)
+			if (dmcProperties[13] != null)
 			{
-				output += $"{{{{CTI;{ctiProperties[12]};FANCY}}}}\n";
+				output += $"{{{{CTI;{dmcProperties[13]};FANCY}}}}\n";
 			}
-			if (ctiProperties[13] != null)
+			if (dmcProperties[14] != null)
 			{
-				output += $"{{{{CTI;{ctiProperties[13]};FANCY}}}}\n";
+				output += $"{{{{CTI;{dmcProperties[14]};FANCY}}}}\n";
 			}
-			if (ctiProperties[9] != null)
+			if (dmcProperties[10] != null)
 			{
-				output += $"Token Detected for this card: {ctiProperties[9]}\n";
+				output += $"Token Detected for this card: {dmcProperties[10]}\n";
 			}
-			output += $"\nProvided content for this embed found from; <{ctiProperties[15]}>";
+			output += $"\nProvided content for this embed found from; <{dmcProperties[16]}>";
 			messageBuilder.AddFile($"fancy_{iterator30}.png", stream);
 			var takeout = output;
 			return (messageBuilder, takeout);
