@@ -525,7 +525,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 				// Now fetch the streams
 				CostNum = await httpClient.GetStreamAsync($"{NumBase}{costNum}.png");
 				CostXSymbol = await httpClient.GetStreamAsync(CostX);
-				CostType = await httpClient.GetStreamAsync($"{CostBase}{costType.Replace("Bones", "Bone")}.png");
+				CostType = await httpClient.GetStreamAsync($"{CostBase}{costType.Replace("Bones", "Bone").Replace("Skulls", "Skull")}.png");
 				Image<Rgba32> Num = await Task.Run(() => Image.Load<Rgba32>(CostNum));
 				Image<Rgba32> X = await Task.Run(() => Image.Load<Rgba32>(CostXSymbol));
 				Image<Rgba32> Type = await Task.Run(() => Image.Load<Rgba32>(CostType));

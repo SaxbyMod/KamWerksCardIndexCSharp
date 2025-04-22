@@ -109,8 +109,11 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 					string[] formattedcontent = content.Split(";");
 					logger.Info(formattedcontent[0].ToString());
 					logger.Info(formattedcontent[1].ToString());
+					formattedcontent[0] = formattedcontent[0].ToUpper();
+					formattedcontent[1] = Capitalization.CapitalizeWithSpaces(formattedcontent[1]);
 					if (formattedcontent.Length == 3)
 					{
+						formattedcontent[2] = formattedcontent[2].ToUpper();
 						logger.Info(formattedcontent[2].ToString());
 						if (Dicts.SETS.Contains(formattedcontent[0]))
 						{
