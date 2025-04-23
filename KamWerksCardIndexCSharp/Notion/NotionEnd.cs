@@ -90,10 +90,7 @@ namespace KamWerksCardIndexCSharp.Notion
                 }
                 catch (NotionApiRateLimitException ex) when (ex.StatusCode == HttpStatusCode.TooManyRequests)
                 {
-                    int waitTime = ex.RetryAfter?.Milliseconds ?? delay;
-
-                    if (retryCount >= maxRetries)
-                        throw new Exception($"Max retries reached. Last error: {ex.Message}");
+                    int waitTime = ex.RetryAfter?.Milliseconds + 50 ?? delay;
 
                     Console.WriteLine($"Rate limited! Retrying in {waitTime}ms...");
                     await Task.Delay(waitTime);

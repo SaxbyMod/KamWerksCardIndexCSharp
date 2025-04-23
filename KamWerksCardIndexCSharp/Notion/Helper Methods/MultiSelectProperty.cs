@@ -25,7 +25,7 @@ namespace KamWerksCardIndexCSharp.Notion.Helper_Methods
 			
 			foreach (var item in valuenew.MultiSelect)
 			{
-				multiselect = multiselect + $"{item} ";
+					multiselect = multiselect + $"{item.Name} ";
 			}
 			return multiselect;
 		}

@@ -142,13 +142,26 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 
 				CostImage.Mutate(img =>
 					{
-						img.Resize(Num.Width + X.Width + Type.Width + 10, Math.Max(Num.Height, Math.Max(X.Height, Type.Height)));
-						int xOffset = 0;
-						img.DrawImage(Num, new Point(xOffset, (img.GetCurrentSize().Height - Num.Height) / 2), 1.0f);
-						xOffset += Num.Width + 5;
-						img.DrawImage(X, new Point(xOffset, (img.GetCurrentSize().Height - X.Height) / 2), 1.0f);
-						xOffset += X.Width + 5;
-						img.DrawImage(Type, new Point(xOffset, (img.GetCurrentSize().Height - Type.Height) / 2), 1.0f);
+						if (costType == "Energy" || costType == "Blood" || costType == "Sapphire" || costType == "Ruby" || costType == "Emerald" || costNum == "3" || costNum == "2" || costNum == "1")
+						{
+							int num = 0;
+							int.TryParse(costNum, out num);
+							img.Resize((Type.Width * num), Type.Height);
+							for (int i = 0; num > i; i++)
+							{
+								img.DrawImage(Type, new Point((Type.Width * i), (img.GetCurrentSize().Height - Type.Height) / 2), 1.0f);
+							}
+						}
+						else
+						{
+							img.Resize(Num.Width + X.Width + Type.Width + 10, Math.Max(Num.Height, Math.Max(X.Height, Type.Height)));
+							int xOffset = 0;
+							img.DrawImage(Num, new Point(xOffset, (img.GetCurrentSize().Height - Num.Height) / 2), 1.0f);
+							xOffset += Num.Width + 5;
+							img.DrawImage(X, new Point(xOffset, (img.GetCurrentSize().Height - X.Height) / 2), 1.0f);
+							xOffset += X.Width + 5;
+							img.DrawImage(Type, new Point(xOffset, (img.GetCurrentSize().Height - Type.Height) / 2), 1.0f);
+						}
 					}
 				);
 
@@ -259,12 +272,12 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 								portraitBase.Mutate(ctx =>
 								{
 									var imageFrame = portraitBase.Frames.RootFrame; // Get the root frame (ImageFrame<Rgba32>)
-									
+
 									if (ctiProperties[3] == "Extras" && (ctiProperties[4] == "Rare" || ctiProperties[4] == "Talking"))
 									{
 										ctx.DrawImage(rareStreak, new Point(0, 0), 1.0f);
 									}
-									
+
 									for (int y = 0; y < portraitBase.Height; y++)
 									{
 										Span<Rgba32> pixelRow = imageFrame.DangerousGetPixelRowMemory(y).Span; // Now explicitly in RGBA32 format
@@ -363,9 +376,15 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 							}
 						}
 					);
-					int CostWidth = costImage.Width / 2;
-					int CostHeight = costImage.Height / 2;
-					img.DrawImage(costImage, new Point(600 - CostWidth, 515 - CostHeight), 1.0f);
+					
+					int RoundToNearestFive(int value)
+					{
+						return (int)(Math.Round(value / 10.0) * 10);
+					}
+					int CostWidth = RoundToNearestFive(costImage.Width / 2);
+					int CostHeight = RoundToNearestFive(costImage.Height / 2);
+
+					img.DrawImage(costImage, new Point(600 - CostWidth, 517 - CostHeight), 1.0f);
 				}
 			);
 
@@ -398,7 +417,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 			var takeout = output;
 			return (messageBuilder, takeout);
 		}
-		
+
 		public async static Task<(DiscordMessageBuilder mess, string takeout)> DMC(int iterator30, string[] formattedcontent)
 		{
 			var logger = LoggerFactory.CreateLogger("console");
@@ -532,13 +551,26 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 
 				CostImage.Mutate(img =>
 					{
-						img.Resize(Num.Width + X.Width + Type.Width + 10, Math.Max(Num.Height, Math.Max(X.Height, Type.Height)));
-						int xOffset = 0;
-						img.DrawImage(Num, new Point(xOffset, (img.GetCurrentSize().Height - Num.Height) / 2), 1.0f);
-						xOffset += Num.Width + 5;
-						img.DrawImage(X, new Point(xOffset, (img.GetCurrentSize().Height - X.Height) / 2), 1.0f);
-						xOffset += X.Width + 5;
-						img.DrawImage(Type, new Point(xOffset, (img.GetCurrentSize().Height - Type.Height) / 2), 1.0f);
+						if (costType == "Energy" || costType == "Blood" || costType == "Sapphire" || costType == "Ruby" || costType == "Emerald" || costType == "Topaz" || costType == "Amethyst" || costType == "Garnet" || costType.Contains("Shattered") || costNum == "3" || costNum == "2" || costNum == "1")
+						{
+							int num = 0;
+							int.TryParse(costNum, out num);
+							img.Resize((Type.Width * num), Type.Height);
+							for (int i = 0; num > i; i++)
+							{
+								img.DrawImage(Type, new Point((Type.Width * i), (img.GetCurrentSize().Height - Type.Height) / 2), 1.0f);
+							}
+						}
+						else
+						{
+							img.Resize(Num.Width + X.Width + Type.Width + 10, Math.Max(Num.Height, Math.Max(X.Height, Type.Height)));
+							int xOffset = 0;
+							img.DrawImage(Num, new Point(xOffset, (img.GetCurrentSize().Height - Num.Height) / 2), 1.0f);
+							xOffset += Num.Width + 5;
+							img.DrawImage(X, new Point(xOffset, (img.GetCurrentSize().Height - X.Height) / 2), 1.0f);
+							xOffset += X.Width + 5;
+							img.DrawImage(Type, new Point(xOffset, (img.GetCurrentSize().Height - Type.Height) / 2), 1.0f);
+						}
 					}
 				);
 
@@ -657,12 +689,12 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 								portraitBase.Mutate(ctx =>
 								{
 									var imageFrame = portraitBase.Frames.RootFrame; // Get the root frame (ImageFrame<Rgba32>)
-									
+
 									if (dmcProperties[3] == "Extras" && (dmcProperties[4] == "Rare" || dmcProperties[4] == "Talking"))
 									{
 										ctx.DrawImage(rareStreak, new Point(0, 0), 1.0f);
 									}
-									
+
 									for (int y = 0; y < portraitBase.Height; y++)
 									{
 										Span<Rgba32> pixelRow = imageFrame.DangerousGetPixelRowMemory(y).Span; // Now explicitly in RGBA32 format
@@ -773,19 +805,19 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 			var output = "To fetch the sigils associated do the following: \n";
 			if (dmcProperties[11] != null)
 			{
-				output += $"{{{{CTI;{dmcProperties[11]};FANCY}}}}\n";
+				output += $"{{{{DMC;{dmcProperties[11]};FANCY}}}}\n";
 			}
 			if (dmcProperties[12] != null)
 			{
-				output += $"{{{{CTI;{dmcProperties[12]};FANCY}}}}\n";
+				output += $"{{{{DMC;{dmcProperties[12]};FANCY}}}}\n";
 			}
 			if (dmcProperties[13] != null)
 			{
-				output += $"{{{{CTI;{dmcProperties[13]};FANCY}}}}\n";
+				output += $"{{{{DMC;{dmcProperties[13]};FANCY}}}}\n";
 			}
 			if (dmcProperties[14] != null)
 			{
-				output += $"{{{{CTI;{dmcProperties[14]};FANCY}}}}\n";
+				output += $"{{{{DMC;{dmcProperties[14]};FANCY}}}}\n";
 			}
 			if (dmcProperties[10] != null)
 			{
