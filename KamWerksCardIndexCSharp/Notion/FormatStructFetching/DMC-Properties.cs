@@ -44,7 +44,7 @@ namespace KamWerksCardIndexCSharp.Notion.FormatStructFetching
 				}
 
 				// Fetch the page content asynchronously
-				Page page = await notionClient.Pages.RetrieveAsync(id);
+				var page = await NotionEnd.RetryWithBackoff(() => notionClient.Pages.RetrieveAsync(id));
 
 				// Get Propeties for List
 				page.Properties.TryGetValue("Internal Name", out var internalName);
@@ -126,7 +126,7 @@ namespace KamWerksCardIndexCSharp.Notion.FormatStructFetching
 				}
 
 				// Fetch the page content asynchronously
-				Page page = await notionClient.Pages.RetrieveAsync(id);
+				var page = await NotionEnd.RetryWithBackoff(() => notionClient.Pages.RetrieveAsync(id));
 				
 				// Get Propeties for List
 				page.Properties.TryGetValue("Internal Name", out var internalName);

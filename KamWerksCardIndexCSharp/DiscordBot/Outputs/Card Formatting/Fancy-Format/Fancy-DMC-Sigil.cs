@@ -43,7 +43,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs.Fancy_Format
 			
 			try
 			{
-				string sigilName = dmcProperties[1].TrimStart().Replace(" ", "%20").Replace("\n", "");
+				string sigilName = dmcProperties[1].TrimStart().Replace(" ", "%20").Replace("\n", "").Replace("’", "'");
 				Sigil = await httpClient.GetStreamAsync(NotionSigilURLBase + sigilName + ".png");
 			}
 			catch (HttpRequestException)

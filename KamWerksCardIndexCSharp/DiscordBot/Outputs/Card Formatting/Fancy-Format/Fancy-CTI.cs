@@ -29,16 +29,16 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs.Fancy_Format
 			}
 
 			var BaseEmbedURL = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/BaseCardEmbed.png";
-			var PortraitURLBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Portraits/";
+			var PortraitURLBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Fancy%20Formatting/Portraits/";
 			var NotionPortraitURLBase = "https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/Custom%20TCG%20Inscryption/Portraits/";
 			var NotionSigilURLBase = "https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/Custom%20TCG%20Inscryption/Sigils/";
 			var BlankSigil = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/BlankSigil.png";
 			var PortraitBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/BasePortrait.png";
 			var RareStreak = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/RareTerrainStreak.png";
 			var FontURL = "https://github.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/raw/refs/heads/main/heavyweight.ttf";
-			var NumBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Costs/Numbers/";
-			var CostX = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Costs/X.png";
-			var CostBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Costs/";
+			var NumBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Fancy%20Formatting/Costs/Numbers/";
+			var CostX = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Fancy%20Formatting/Costs/X.png";
+			var CostBase = "https://raw.githubusercontent.com/SaxbyMod/KamWerksPortraitsAndOtherAssets/refs/heads/main/Formats/CTI/Fancy%20Formatting/Costs/";
 
 			HttpClient httpClient = new();
 			httpClient.DefaultRequestHeaders.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue
@@ -58,18 +58,18 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs.Fancy_Format
 
 			try
 			{
-				Portrait = await httpClient.GetStreamAsync(PortraitURLBase + formattedcontent[1].TrimStart().Replace(" ", "%20").Replace("\n", "") + ".png");
+				Portrait = await httpClient.GetStreamAsync(PortraitURLBase + formattedcontent[1].TrimStart().Replace(" ", "%20").Replace("\n", "").Replace("’", "'") + ".png");
 			}
 			catch (HttpRequestException)
 			{
-				Portrait = await httpClient.GetStreamAsync(NotionPortraitURLBase + formattedcontent[1].TrimStart().Replace(" ", "").Replace("\n", "") + ".png");
+				Portrait = await httpClient.GetStreamAsync(NotionPortraitURLBase + formattedcontent[1].TrimStart().Replace(" ", "").Replace("\n", "").Replace("’", "'") + ".png");
 			}
 
 			if (!string.IsNullOrWhiteSpace(ctiProperties[10]))
 			{
 				try
 				{
-					string sigil1Name = ctiProperties[10].TrimStart().Replace(" ", "%20").Replace("\n", "");
+					string sigil1Name = ctiProperties[10].TrimStart().Replace(" ", "%20").Replace("\n", "").Replace("’", "'");
 					Sigil1 = await httpClient.GetStreamAsync(NotionSigilURLBase + sigil1Name + ".png");
 				}
 				catch (HttpRequestException)
@@ -88,7 +88,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs.Fancy_Format
 			{
 				try
 				{
-					string sigil2Name = ctiProperties[11].TrimStart().Replace(" ", "%20").Replace("\n", "");
+					string sigil2Name = ctiProperties[11].TrimStart().Replace(" ", "%20").Replace("\n", "").Replace("’", "'");
 					Sigil2 = await httpClient.GetStreamAsync(NotionSigilURLBase + sigil2Name + ".png");
 				}
 				catch (HttpRequestException)
@@ -146,21 +146,33 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs.Fancy_Format
 						{
 							int num = 0;
 							int.TryParse(costNum, out num);
-							img.Resize((Type.Width * num), Type.Height);
+							img.Resize((Type.Width * num)-((num-1)*5), Type.Height);
 							for (int i = 0; num > i; i++)
 							{
-								img.DrawImage(Type, new Point((Type.Width * i), (img.GetCurrentSize().Height - Type.Height) / 2), 1.0f);
+								if (i == 0)
+								{
+									img.DrawImage(Type, new Point((Type.Width * i), (img.GetCurrentSize().Height - Type.Height) / 2), 1.0f);	
+								}
+								else
+								{
+									img.DrawImage(Type, new Point((Type.Width * i) - (5*i), (img.GetCurrentSize().Height - Type.Height) / 2), 1.0f);
+								}
 							}
 						}
 						else
 						{
-							img.Resize(Num.Width + X.Width + Type.Width + 10, Math.Max(Num.Height, Math.Max(X.Height, Type.Height)));
+							int RoundToNearestFive(int value)
+							{
+								return (int)(Math.Round(value / 10.0) * 10);
+							}
+							
+							img.Resize(Num.Width + X.Width + Type.Width -10, Math.Max(Num.Height, Math.Max(X.Height, Type.Height)));
 							int xOffset = 0;
-							img.DrawImage(Num, new Point(xOffset, (img.GetCurrentSize().Height - Num.Height) / 2), 1.0f);
-							xOffset += Num.Width + 5;
-							img.DrawImage(X, new Point(xOffset, (img.GetCurrentSize().Height - X.Height) / 2), 1.0f);
-							xOffset += X.Width + 5;
-							img.DrawImage(Type, new Point(xOffset, (img.GetCurrentSize().Height - Type.Height) / 2), 1.0f);
+							img.DrawImage(Num, new Point(xOffset, RoundToNearestFive((img.GetCurrentSize().Height - Num.Height) / 2)), 1.0f);
+							xOffset += Num.Width-5;
+							img.DrawImage(X, new Point(xOffset, RoundToNearestFive((img.GetCurrentSize().Height - X.Height) / 2)), 1.0f);
+							xOffset += X.Width-5;
+							img.DrawImage(Type, new Point(xOffset, RoundToNearestFive((img.GetCurrentSize().Height - Type.Height) / 2)), 1.0f);
 						}
 					}
 				);
@@ -391,7 +403,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs.Fancy_Format
 					int CostWidth = RoundToNearestFive(costImage.Width / 2);
 					int CostHeight = RoundToNearestFive(costImage.Height / 2);
 
-					img.DrawImage(costImage, new Point(600 - CostWidth, 517 - CostHeight), 1.0f);
+					img.DrawImage(costImage, new Point(598 - CostWidth, 512 - CostHeight), 1.0f);
 				}
 			);
 
