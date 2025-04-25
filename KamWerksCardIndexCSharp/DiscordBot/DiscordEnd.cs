@@ -1,4 +1,8 @@
 ﻿using DSharpPlus;
+using DSharpPlus.Commands;
+using DSharpPlus.Commands.Processors.TextCommands;
+using DSharpPlus.Commands.Processors.TextCommands.Parsing;
+using DSharpPlus.Entities;
 using KamWerksCardIndexCSharp.DiscordBot.Commands;
 using KamWerksCardIndexCSharp.Helpers;
 using KamWerksCardIndexCSharp.Notion;
@@ -10,12 +14,12 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 	{
 		private static bool hasNotionRun = false;
 		
-		public static async Task Main(string[] args)
+		public static async Task Main()
 		{
-			await HandleNotionAndDiscordAsync(args);
+			await HandleNotionAndDiscordAsync();
 		}
 		
-		private static async Task HandleNotionAndDiscordAsync(string[] args)
+		private static async Task HandleNotionAndDiscordAsync()
 		{
 			string KamWerksID = Environment.GetEnvironmentVariable("TUTOR_TOKEN");
 			if (KamWerksID == null)
@@ -29,7 +33,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 
 			if (!hasNotionRun || notionChanged)
 			{
-				await NotionEnd.NotionMain(args);
+				await NotionEnd.NotionMain();
 				logger.Info("Running NotionEnd due to first run or Notion DB change...");
 				if (!hasNotionRun)
 				{
@@ -70,18 +74,75 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 				)
 			);
 			
-			builder.ConfigureEventHandlers
-			(
-				Commands => Commands.HandleMessageCreated(
-					async (s, e) =>
-					{
-						await Admin_Commands.AdminAsyncCommands(s, e, args);
-					}
-				)
-			);
+			builder.UseCommands((IServiceProvider serviceProvider, CommandsExtension extension) =>
+			{
+				extension.AddCommands([typeof(DiscordEnd)]);
+				TextCommandProcessor textCommandProcessor = new(new()
+				{
+					// The default behavior is that the bot reacts to direct
+					// mentions and to the "!" prefix. If you want to change
+					// it, you first set if the bot should react to mentions
+					// and then you can provide as many prefixes as you want.
+					PrefixResolver = new DefaultPrefixResolver(false, "<<").ResolvePrefixAsync,
+				});
+
+				// Add text commands with a custom prefix (?ping)
+				extension.AddProcessor(textCommandProcessor);
+			}, new CommandsConfiguration()
+			{
+				// The default value is true, however it's shown here for clarity
+				RegisterDefaultCommandProcessors = false,
+			});
 
 			await builder.ConnectAsync();
 			await Task.Delay(-1);
+		}
+		
+		[Command("Recache>>")]
+		public async Task RecacheRolesAsync(CommandContext context)
+		{
+			IReadOnlyList<DiscordRole> guildRoles = await context.Guild.GetRolesAsync();
+			DiscordMember member = await context.Guild.GetMemberAsync(context.User.Id);
+
+			var Member_Roles = member.Roles.ToList();
+			var Guild_Roles = guildRoles.ToList();
+			var guild_id = context.Guild.Id;
+
+			List<ulong> ApprovedRolesList = new List<ulong>();
+			List<DiscordRole> ApprovedRoles = new List<DiscordRole>();
+			if (guild_id == 928765504410247269)
+			{
+				ApprovedRolesList.Add(934185190048276552);
+				ApprovedRolesList.Add(934493152369336330);
+				ApprovedRolesList.Add(935634664574574612);
+				ApprovedRolesList.Add(947695506379907114);
+				ApprovedRolesList.Add(938259539906662442);
+				ApprovedRolesList.Add(936651233958174780);
+				ApprovedRolesList.Add(1353368197059055616);
+				ApprovedRolesList.Add(938483990216708166);
+			}
+			if (guild_id == 1115010083168997376)
+			{
+				ApprovedRolesList.Add(1115015267798487221);
+				ApprovedRolesList.Add(1160015157506879528);
+				ApprovedRolesList.Add(1115015427924439051);
+				ApprovedRolesList.Add(1341213126091341874);
+				ApprovedRolesList.Add(1160316313500139691);
+			}
+
+			foreach (var id in ApprovedRolesList)
+			{
+				var role = Guild_Roles.FirstOrDefault(x => x.Id == id);
+				ApprovedRoles.Add(role);
+			}
+			
+			foreach (var value in Member_Roles)
+			{
+				if (ApprovedRoles.Contains(value))
+				{
+					Admin_Commands.AdminAsyncCommands(context);
+				}
+			}
 		}
 	}
 }

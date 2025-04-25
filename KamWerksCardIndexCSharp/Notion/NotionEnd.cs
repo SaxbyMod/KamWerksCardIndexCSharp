@@ -23,7 +23,7 @@ namespace KamWerksCardIndexCSharp.Notion
 
         private static List<string> previousSnapshot = new();
 
-        public static async Task NotionMain(string[] args)
+        public static async Task NotionMain()
         {
             var logger = LoggerFactory.CreateLogger("console");
             string NotionAPIKey = Environment.GetEnvironmentVariable("NOTION_API_KEY");

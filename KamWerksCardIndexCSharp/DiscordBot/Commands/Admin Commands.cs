@@ -1,7 +1,7 @@
 using DSharpPlus;
+using DSharpPlus.Commands;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
-using KamWerksCardIndexCSharp.DiscordBot.Outputs;
 using System.Text.RegularExpressions;
 using KamWerksCardIndexCSharp.Helpers;
 using KamWerksCardIndexCSharp.Notion;
@@ -10,14 +10,11 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Commands
 {
 	public class Admin_Commands
 	{
-		public static async Task AdminAsyncCommands(DiscordClient client, MessageCreatedEventArgs eventArgs, string[] args)
+		public static async Task AdminAsyncCommands(CommandContext context)
 		{
 			var logger = LoggerFactory.CreateLogger("console");
-
-			string message = eventArgs.Message.Content;
-			var user = eventArgs.Author.Presence;
-
-			MatchCollection matches = Regex.Matches(message, @"\<\<(.*?)\>\]>");
+			var message = context.Command.ToString();
+			MatchCollection matches = Regex.Matches(message, @"(.*?)\>\>");
 			List<string> extractedContents = new List<string>();
 
 			foreach (Match match in matches)
@@ -29,16 +26,19 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Commands
 			{
 				logger.Info("Extracted Contents;");
 				var iterator30 = 0;
+
 				foreach (string content in extractedContents)
 				{
-					if (user.User.Username == "thincreator3483" || user.User.Username == "master_yurpo")
+					Console.WriteLine("Content found: " + content);
+
+					if (content == "Recache")
 					{
-						if (content == "Recache")
-						{
-							await NotionEnd.NotionMain(args);
-						}
+						await NotionEnd.NotionMain();
+						var messageOutput = content + "Recache has completed";
+						await context.RespondAsync(messageOutput);
 					}
 				}
+				return;
 			}
 		}
 	}
