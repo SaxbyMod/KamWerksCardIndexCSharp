@@ -14,32 +14,14 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Commands
 		{
 			var logger = LoggerFactory.CreateLogger("console");
 			var message = context.Command.ToString();
-			MatchCollection matches = Regex.Matches(message, @"(.*?)\>\>");
-			List<string> extractedContents = new List<string>();
 
-			foreach (Match match in matches)
+			if (message.Replace("|", "").Contains("Recache"))
 			{
-				extractedContents.Add(match.Groups[1].Value.Trim()); // Trim extracted content
+				await NotionEnd.NotionMain();
+				var messageOutput = "Admin Command: " + "Recache" + " has completed";
+				await context.RespondAsync(messageOutput);
 			}
-
-			if (extractedContents.Count > 0)
-			{
-				logger.Info("Extracted Contents;");
-				var iterator30 = 0;
-
-				foreach (string content in extractedContents)
-				{
-					Console.WriteLine("Content found: " + content);
-
-					if (content == "Recache")
-					{
-						await NotionEnd.NotionMain();
-						var messageOutput = content + "Recache has completed";
-						await context.RespondAsync(messageOutput);
-					}
-				}
-				return;
-			}
+			return;
 		}
 	}
 }

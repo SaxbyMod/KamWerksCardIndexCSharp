@@ -28,10 +28,8 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 			}
 
 			var logger = LoggerFactory.CreateLogger("console");
-			
-			bool notionChanged = await NotionEnd.HasNotionDatabaseChangedAsync();
 
-			if (!hasNotionRun || notionChanged)
+			if (!hasNotionRun)
 			{
 				await NotionEnd.NotionMain();
 				logger.Info("Running NotionEnd due to first run or Notion DB change...");
@@ -83,7 +81,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 					// mentions and to the "!" prefix. If you want to change
 					// it, you first set if the bot should react to mentions
 					// and then you can provide as many prefixes as you want.
-					PrefixResolver = new DefaultPrefixResolver(false, "<<").ResolvePrefixAsync,
+					PrefixResolver = new DefaultPrefixResolver(false, "|").ResolvePrefixAsync,
 				});
 
 				// Add text commands with a custom prefix (?ping)
@@ -98,7 +96,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 			await Task.Delay(-1);
 		}
 		
-		[Command("Recache>>")]
+		[Command("Recache")]
 		public async Task RecacheRolesAsync(CommandContext context)
 		{
 			IReadOnlyList<DiscordRole> guildRoles = await context.Guild.GetRolesAsync();
@@ -135,12 +133,13 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 				var role = Guild_Roles.FirstOrDefault(x => x.Id == id);
 				ApprovedRoles.Add(role);
 			}
-			
-			foreach (var value in Member_Roles)
+			int TimesApproved = 0;
+			for(int i = 0; Member_Roles.Count() > i; i++)
 			{
-				if (ApprovedRoles.Contains(value))
+				if (ApprovedRoles.Contains(Member_Roles[i]) && TimesApproved == 0)
 				{
 					Admin_Commands.AdminAsyncCommands(context);
+					TimesApproved++;
 				}
 			}
 		}

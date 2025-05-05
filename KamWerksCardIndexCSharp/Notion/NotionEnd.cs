@@ -36,16 +36,20 @@ namespace KamWerksCardIndexCSharp.Notion
             logger.Info("Connecting to Notion API...");
             var client = NotionClientFactory.Create(new ClientOptions { AuthToken = NotionAPIKey });
 
-            var CtiCardPagesList = await FetchAllPageIds(client, "e19c88aa75b44bfe89321bcde8dc7d9f");
+            var CtiCardPagesList = new List<string>();
+	        CtiCardPagesList = await FetchAllPageIds(client, "e19c88aa75b44bfe89321bcde8dc7d9f");
             CtiCards = await FetchPageNamesAndStore(client, CtiCardPagesList, "Card", CtiCardNames);
 
-            var CtiSigilPagesList = await FetchAllPageIds(client, "933d6166cb3f4ee89db51e4cf464f5bd");
+            var CtiSigilPagesList = new List<string>();
+            CtiSigilPagesList = await FetchAllPageIds(client, "933d6166cb3f4ee89db51e4cf464f5bd");
             CtiSigils = await FetchPageNamesAndStore(client, CtiSigilPagesList, "Sigil", CtiSigilNames);
 
-            var DmcCardPagesList = await FetchAllPageIds(client, "1229bd3134c34f69a369c5ef830bd7a0");
+            var DmcCardPagesList = new List<string>();
+            DmcCardPagesList = await FetchAllPageIds(client, "1229bd3134c34f69a369c5ef830bd7a0");
             DmcCards = await FetchPageNamesAndStore(client, DmcCardPagesList, "Card", DmcCardNames);
 
-            var DmcSigilPagesList = await FetchAllPageIds(client, "ae46b70d77e649d78a94d2fc62a886e0");
+            var DmcSigilPagesList = new List<string>();
+            DmcSigilPagesList = await FetchAllPageIds(client, "ae46b70d77e649d78a94d2fc62a886e0");
             DmcSigils = await FetchPageNamesAndStore(client, DmcSigilPagesList, "Sigil", DmcSigilNames);
 
             logger.Info("Notion data retrieval completed successfully.");
@@ -128,28 +132,6 @@ namespace KamWerksCardIndexCSharp.Notion
 
 	        await Task.WhenAll(tasks);
 	        return pageNameDict;
-        }
-
-        public static async Task<bool> HasNotionDatabaseChangedAsync()
-        {
-	        var currentSnapshot = new List<string>(CtiCardNames.Concat(CtiSigilNames).Concat(DmcCardNames).Concat(DmcSigilNames));
-
-	        // Log the current snapshot for debugging
-	        Console.WriteLine("Current Snapshot: " + string.Join(", ", currentSnapshot));
-	        Console.WriteLine("Previous Snapshot: " + string.Join(", ", previousSnapshot));
-
-	        if (!previousSnapshot.SequenceEqual(currentSnapshot))
-	        {
-		        previousSnapshot = new List<string>(currentSnapshot);
-        
-		        // Log if change is detected
-		        Console.WriteLine("Changes detected in Notion database!");
-		        return true;
-	        }
-
-	        // Log if no changes are detected
-	        Console.WriteLine("No changes detected.");
-	        return false;
         }
     }
 }
