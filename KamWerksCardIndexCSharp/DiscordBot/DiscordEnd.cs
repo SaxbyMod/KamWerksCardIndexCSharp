@@ -55,6 +55,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 			builder.ConfigureEventHandlers
 			(
 				Commands => Commands.HandleMessageCreated(
+					if(msg.author == client.user) return;
 					async (s, e) =>
 					{
 						await Cards_Command.CardAsyncCommands(s, e);
@@ -65,6 +66,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 			builder.ConfigureEventHandlers
 			(
 				Commands => Commands.HandleMessageCreated(
+					if(msg.author == client.user) return;
 					async (s, e) =>
 					{
 						await Sigils_Command.SigilAsyncCommands(s, e);
