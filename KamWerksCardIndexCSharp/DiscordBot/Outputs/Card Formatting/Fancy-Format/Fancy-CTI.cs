@@ -17,7 +17,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs.Fancy_Format
 {
 	public class Fancy_CTI
 	{
-		public async static Task<(DiscordMessageBuilder mess, string takeout)> CTI(int iterator30, string[] formattedcontent)
+		public async static Task<(DiscordMessageBuilder mess, string takeout)> CTI(int iterator30, string[] formattedcontent, string additionalproperties)
 		{
 			var logger = LoggerFactory.CreateLogger("console");
 			DiscordMessageBuilder messageBuilder = new();
@@ -410,29 +410,82 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs.Fancy_Format
 			var stream = new MemoryStream();
 			await image.SaveAsync(stream, PngFormat.Instance);
 			stream.Position = 0;
-			var output = "To fetch the sigils associated do the following: \n";
-			if (ctiProperties[10] != null)
+			var output = "";
+			if (additionalproperties != "NOEXCESS" && additionalproperties != "NOEXCESS-SIGILINCLUSIVE")
 			{
-				output += $"{{{{CTI;{ctiProperties[10]};FANCY}}}}\n";
-			}
-			if (ctiProperties[11] != null)
-			{
-				output += $"{{{{CTI;{ctiProperties[11]};FANCY}}}}\n";
-			}
-			if (ctiProperties[12] != null)
-			{
-				output += $"{{{{CTI;{ctiProperties[12]};FANCY}}}}\n";
-			}
-			if (ctiProperties[13] != null)
-			{
-				output += $"{{{{CTI;{ctiProperties[13]};FANCY}}}}\n";
-			}
-			if (ctiProperties[9] != null)
-			{
-				output += $"Token Detected for this card: {ctiProperties[9]}\n";
+				output += "To fetch the sigils associated do the following: \n";
+				if (ctiProperties[10] != null)
+				{
+					output += $"{{{{CTI;{ctiProperties[10]};FANCY}}}}\n";
+				}
+
+				if (ctiProperties[11] != null)
+				{
+					output += $"{{{{CTI;{ctiProperties[11]};FANCY}}}}\n";
+				}
+
+				if (ctiProperties[12] != null)
+				{
+					output += $"{{{{CTI;{ctiProperties[12]};FANCY}}}}\n";
+				}
+
+				if (ctiProperties[13] != null)
+				{
+					output += $"{{{{CTI;{ctiProperties[13]};FANCY}}}}\n";
+				}
+
+				if (ctiProperties[9] != null)
+				{
+					output += $"Token Detected for this card: {ctiProperties[9]}\n";
+				}
 			}
 			output += $"\nProvided content for this embed found from; <{ctiProperties[15]}>";
 			messageBuilder.AddFile($"fancy_{iterator30}.png", stream);
+			iterator30++;
+			
+			if (additionalproperties == "SIGILINCLUSIVE" || additionalproperties == "NOEXCESS-SIGILINCLUSIVE")
+			{
+				string token = "";
+				if (ctiProperties[9] != null)
+				{
+					token = ctiProperties[9];
+				}
+
+				output = output.Replace("this", "this cards");
+				
+				if (ctiProperties[10] != null)
+				{
+					var sigil1Embeded = await Fancy_CTI_Sigil.CTIFromCard(formattedcontent[2], ctiProperties[10], token);
+					output += "\n" + sigil1Embeded.takeout.Replace("this", "the Sigil 1");
+					messageBuilder.AddFile($"fancy_{iterator30}.png", sigil1Embeded.image);
+					iterator30++;
+				}
+
+				if (ctiProperties[11] != null)
+				{
+					var sigil2Embeded = await Fancy_CTI_Sigil.CTIFromCard(formattedcontent[2], ctiProperties[11], token);
+					output += "\n" + sigil2Embeded.takeout.Replace("this", "the Sigil 2");
+					messageBuilder.AddFile($"fancy_{iterator30}.png", sigil2Embeded.image);
+					iterator30++;
+				}
+
+				if (ctiProperties[12] != null)
+				{
+					var sigil3Embeded = await Fancy_CTI_Sigil.CTIFromCard(formattedcontent[2], ctiProperties[12], token);
+					output += "\n" + sigil3Embeded.takeout.Replace("this", "the Sigil 3");
+					messageBuilder.AddFile($"fancy_{iterator30}.png", sigil3Embeded.image);
+					iterator30++;
+				}
+
+				if (ctiProperties[13] != null)
+				{
+					var sigil4Embeded = await Fancy_CTI_Sigil.CTIFromCard(formattedcontent[2], ctiProperties[13], token);
+					output += "\n" + sigil4Embeded.takeout.Replace("this", "the Sigil 4");
+					messageBuilder.AddFile($"fancy_{iterator30}.png", sigil4Embeded.image);
+					iterator30++;
+				}
+			}
+			
 			var takeout = output;
 			return (messageBuilder, takeout);
 		}

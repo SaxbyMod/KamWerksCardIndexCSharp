@@ -52,26 +52,22 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 
 			DiscordClientBuilder builder = DiscordClientBuilder.CreateDefault(KamWerksID, DiscordIntents.AllUnprivileged | DiscordIntents.MessageContents);
 			
-			builder.ConfigureEventHandlers
-			(
-				Commands => Commands.HandleMessageCreated(
-					if(msg.author == client.user) return;
-					async (s, e) =>
-					{
-						await Cards_Command.CardAsyncCommands(s, e);
-					}
-				)
+			builder.ConfigureEventHandlers(commands =>
+				commands.HandleMessageCreated(async (s, e) =>
+				{
+					if (e.Author.IsBot || e.Author.Id == s.CurrentUser.Id)
+						return;
+					await Cards_Command.CardAsyncCommands(s, e);
+				})
 			);
-			
-			builder.ConfigureEventHandlers
-			(
-				Commands => Commands.HandleMessageCreated(
-					if(msg.author == client.user) return;
-					async (s, e) =>
-					{
-						await Sigils_Command.SigilAsyncCommands(s, e);
-					}
-				)
+
+			builder.ConfigureEventHandlers(commands =>
+				commands.HandleMessageCreated(async (s, e) =>
+				{
+					if (e.Author.IsBot || e.Author.Id == s.CurrentUser.Id)
+						return;
+					await Sigils_Command.SigilAsyncCommands(s, e);
+				})
 			);
 			
 			builder.UseCommands((IServiceProvider serviceProvider, CommandsExtension extension) =>

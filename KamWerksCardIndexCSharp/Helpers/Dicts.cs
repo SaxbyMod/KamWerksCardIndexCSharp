@@ -16,6 +16,14 @@ namespace KamWerksCardIndexCSharp.Helpers
 			"TEST",
 			"FANCY"
 		};
+		
+		public static List<string> ResponseTypes = new List<string>()
+		{
+			"NOEXCESS",
+			"SIGILINCLUSIVE",
+			"NOEXCESS-SIGILINCLUSIVE",
+			"SIGILINCLUSIVE-NOEXCESS"
+		};
 
 		public static Dictionary<string, Shades> TierTempleShades = new Dictionary<string, Shades>();
 		public static async Task defineShades (Rgb Light, Rgb Mid, Rgb Dark, string PalleteName)

@@ -18,15 +18,15 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 {
 	public class FANCY
 	{
-		public async static Task<(DiscordMessageBuilder mess, string takeout)> CTI(int iterator30, string[] formattedcontent)
+		public async static Task<(DiscordMessageBuilder mess, string takeout)> CTI(int iterator30, string[] formattedcontent, string additionalproperties)
 		{
-			var outputTest = await Fancy_CTI.CTI(iterator30, formattedcontent);
+			var outputTest = await Fancy_CTI.CTI(iterator30, formattedcontent, additionalproperties);
 			return outputTest;
 		}
 
-		public async static Task<(DiscordMessageBuilder mess, string takeout)> DMC(int iterator30, string[] formattedcontent)
+		public async static Task<(DiscordMessageBuilder mess, string takeout)> DMC(int iterator30, string[] formattedcontent, string additionalproperties)
 		{
-			var outputTest = await Fancy_DMC.DMC(iterator30, formattedcontent);
+			var outputTest = await Fancy_DMC.DMC(iterator30, formattedcontent, additionalproperties);
 			return outputTest;
 		}
 		

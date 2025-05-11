@@ -12,13 +12,27 @@
 | Test | TEST |
 | Fancy Image | FANCY |
 
+### Modifiers
+| Modier | Code | What It Does |
+|:-:|:-:|
+| No Excess | NOEXCESS | Get rid of the tips that pop on for querying sigils on formats that dont have the def shown |
+| Sigil Inclusive | SIGILINCLUSIVE | Query the sigil with the card |
+
+### Admin Commands;
+
+| Name | What it does |
+| :-: | :-: |
+| Recache | Allows an Admin of this server to recache the bots data. |
+
 ### How do I use the bot?
 
 Send a message in the following format (Or use that bit in a message)
 
-* *For Cards:* [[SET;Card Name;Type(Optional)]]
+* *For Cards:* [[SET;Card Name;Type(Optional);Modifers(Optional)]]
 
-* *For Sigils: [NYI]* {{SET;Sigil Name;Type}}
+* *For Sigils: * {{SET;Sigil Name;Type}}
+
+* *For Admin Commands: * <<Command>>
 
 ### Where is data pulled from?
 

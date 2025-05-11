@@ -17,7 +17,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs.Fancy_Format
 {
 	public class Fancy_DMC
 	{
-		public async static Task<(DiscordMessageBuilder mess, string takeout)> DMC(int iterator30, string[] formattedcontent)
+		public async static Task<(DiscordMessageBuilder mess, string takeout)> DMC(int iterator30, string[] formattedcontent, string additionalproperties)
 		{
 			var logger = LoggerFactory.CreateLogger("console");
 			DiscordMessageBuilder messageBuilder = new();
@@ -420,29 +420,82 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs.Fancy_Format
 			var stream = new MemoryStream();
 			await image.SaveAsync(stream, PngFormat.Instance);
 			stream.Position = 0;
-			var output = "To fetch the sigils associated do the following: \n";
-			if (dmcProperties[11] != null)
+			var output = "";
+			if (additionalproperties != "NOEXCESS" && additionalproperties != "NOEXCESS-SIGILINCLUSIVE")
 			{
-				output += $"{{{{DMC;{dmcProperties[11]};FANCY}}}}\n";
-			}
-			if (dmcProperties[12] != null)
-			{
-				output += $"{{{{DMC;{dmcProperties[12]};FANCY}}}}\n";
-			}
-			if (dmcProperties[13] != null)
-			{
-				output += $"{{{{DMC;{dmcProperties[13]};FANCY}}}}\n";
-			}
-			if (dmcProperties[14] != null)
-			{
-				output += $"{{{{DMC;{dmcProperties[14]};FANCY}}}}\n";
-			}
-			if (dmcProperties[10] != null)
-			{
-				output += $"Token Detected for this card: {dmcProperties[10]}\n";
+				output = "To fetch the sigils associated do the following: \n";
+				if (dmcProperties[11] != null)
+				{
+					output += $"{{{{DMC;{dmcProperties[11]};FANCY}}}}\n";
+				}
+
+				if (dmcProperties[12] != null)
+				{
+					output += $"{{{{DMC;{dmcProperties[12]};FANCY}}}}\n";
+				}
+
+				if (dmcProperties[13] != null)
+				{
+					output += $"{{{{DMC;{dmcProperties[13]};FANCY}}}}\n";
+				}
+
+				if (dmcProperties[14] != null)
+				{
+					output += $"{{{{DMC;{dmcProperties[14]};FANCY}}}}\n";
+				}
+
+				if (dmcProperties[10] != null)
+				{
+					output += $"Token Detected for this card: {dmcProperties[10]}\n";
+				}
 			}
 			output += $"\nProvided content for this embed found from; <{dmcProperties[16]}>";
 			messageBuilder.AddFile($"fancy_{iterator30}.png", stream);
+			iterator30++;
+			
+			if (additionalproperties == "SIGILINCLUSIVE" || additionalproperties == "NOEXCESS-SIGILINCLUSIVE")
+			{
+				string token = "";
+				if (dmcProperties[10] != null)
+				{
+					token = dmcProperties[10];
+				}
+
+				output = output.Replace("this", "this cards");
+				
+				if (dmcProperties[11] != null)
+				{
+					var sigil1Embeded = await Fancy_DMC_Sigil.DMCFromCard(formattedcontent[2], dmcProperties[11], token);
+					output += "\n" + sigil1Embeded.takeout.Replace("this", "the Sigil 1");
+					messageBuilder.AddFile($"fancy_{iterator30}.png", sigil1Embeded.image);
+					iterator30++;
+				}
+
+				if (dmcProperties[12] != null)
+				{
+					var sigil2Embeded = await Fancy_DMC_Sigil.DMCFromCard(formattedcontent[2], dmcProperties[12], token);
+					output += "\n" + sigil2Embeded.takeout.Replace("this", "the Sigil 2");
+					messageBuilder.AddFile($"fancy_{iterator30}.png", sigil2Embeded.image);
+					iterator30++;
+				}
+
+				if (dmcProperties[13] != null)
+				{
+					var sigil3Embeded = await Fancy_DMC_Sigil.DMCFromCard(formattedcontent[2], dmcProperties[13], token);
+					output += "\n" + sigil3Embeded.takeout.Replace("this", "the Sigil 3");
+					messageBuilder.AddFile($"fancy_{iterator30}.png", sigil3Embeded.image);
+					iterator30++;
+				}
+
+				if (dmcProperties[14] != null)
+				{
+					var sigil4Embeded = await Fancy_DMC_Sigil.DMCFromCard(formattedcontent[2], dmcProperties[14], token);
+					output += "\n" + sigil4Embeded.takeout.Replace("this", "the Sigil 4");
+					messageBuilder.AddFile($"fancy_{iterator30}.png", sigil4Embeded.image);
+					iterator30++;
+				}
+			}
+			
 			var takeout = output;
 			return (messageBuilder, takeout);
 		}
