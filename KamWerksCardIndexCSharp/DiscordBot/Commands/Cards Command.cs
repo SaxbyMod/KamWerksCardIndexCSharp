@@ -128,7 +128,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Commands
 							{
 								additionalproperties = "SIGILINCLUSIVE";
 							}
-							else if (formattedcontent[3] == "NOEXCESS-SIGILINCLUSIVE" || formattedcontent[3] == "SIGILINCLUSIVE-NOEXCESS")
+							else if (formattedcontent[2] == "NOEXCESS-SIGILINCLUSIVE" || formattedcontent[2] == "SIGILINCLUSIVE-NOEXCESS")
 							{
 								additionalproperties = "NOEXCESS-SIGILINCLUSIVE";
 							}
