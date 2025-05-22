@@ -114,6 +114,34 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Commands
 									await eventArgs.Message.RespondAsync(messageBuilder);
 								}
 							}
+							else if (formattedcontent[0] == "IOTFD")
+							{
+								if (NotionEnd.IotfdCardNames.Contains(formattedcontent[1], StringComparer.OrdinalIgnoreCase))
+								{
+									if (Dicts.Formatting.Contains(formattedcontent[2]))
+									{
+										if (formattedcontent[2] == Dicts.Formatting[0])
+										{
+											var outputTest = await Test.IOTFD(formattedcontent, iterator30);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
+										} else if (formattedcontent[2] == Dicts.Formatting[1])
+										{
+											var outputTest = await FANCY.IOTFD(iterator30, formattedcontent, additionalproperties);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
+										}
+									}
+								}
+								else
+								{
+									DiscordMessageBuilder messageBuilder = new();
+									messageBuilder.Content = $"\n {formattedcontent[1]} was not found, try again!";
+									await eventArgs.Message.RespondAsync(messageBuilder);
+								}
+							}
 						}
 					} else if (formattedcontent.Length == 3 && !Dicts.Formatting.Contains(formattedcontent[2].ToUpper()))
 					{
@@ -169,6 +197,22 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Commands
 									await eventArgs.Message.RespondAsync(messageBuilder);
 								}
 							}
+							else if (formattedcontent[0] == "IOTFD")
+							{
+								if (NotionEnd.IotfdCardNames.Contains(formattedcontent[1], StringComparer.OrdinalIgnoreCase))
+								{
+									var outputTest = await FANCY.IOTFD(iterator30, formattedcontent, additionalproperties);
+									var messageOutput = outputTest.mess;
+									messageOutput.Content = outputTest.takeout;
+									await eventArgs.Message.RespondAsync(messageOutput);
+								}
+								else
+								{
+									DiscordMessageBuilder messageBuilder = new();
+									messageBuilder.Content = $"\n {formattedcontent[1]} was not found, try again!";
+									await eventArgs.Message.RespondAsync(messageBuilder);
+								}
+							}
 						}
 					}
 					else
@@ -197,6 +241,22 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Commands
 								if (NotionEnd.DmcCardNames.Contains(formattedcontent[1], StringComparer.OrdinalIgnoreCase))
 								{
 									var outputTest = await FANCY.DMC(iterator30, formattedcontent, additionalproperties);
+									var messageOutput = outputTest.mess;
+									messageOutput.Content = outputTest.takeout;
+									await eventArgs.Message.RespondAsync(messageOutput);
+								}
+								else
+								{
+									DiscordMessageBuilder messageBuilder = new();
+									messageBuilder.Content = $"\n {formattedcontent[1]} was not found, try again!";
+									await eventArgs.Message.RespondAsync(messageBuilder);
+								}
+							}
+							else if (formattedcontent[0] == "IOTFD")
+							{
+								if (NotionEnd.IotfdCardNames.Contains(formattedcontent[1], StringComparer.OrdinalIgnoreCase))
+								{
+									var outputTest = await FANCY.IOTFD(iterator30, formattedcontent, additionalproperties);
 									var messageOutput = outputTest.mess;
 									messageOutput.Content = outputTest.takeout;
 									await eventArgs.Message.RespondAsync(messageOutput);

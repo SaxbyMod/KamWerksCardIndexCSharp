@@ -8,7 +8,8 @@ namespace KamWerksCardIndexCSharp.Helpers
 		public static List<string> SETS = new List<string>()
 		{
 			"CTI",
-			"DMC"
+			"DMC",
+			"IOTFD"
 		};
 
 		public static List<string> Formatting = new List<string>()

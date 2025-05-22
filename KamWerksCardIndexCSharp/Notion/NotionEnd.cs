@@ -20,6 +20,11 @@ namespace KamWerksCardIndexCSharp.Notion
         public static List<string> DmcSigilNames { get; private set; } = new();
         public static ConcurrentDictionary<string, string> DmcCards { get; private set; } = new();
         public static ConcurrentDictionary<string, string> DmcSigils { get; private set; } = new();
+        
+        public static List<string> IotfdCardNames { get; private set; } = new();
+        public static List<string> IotfdSigilNames { get; private set; } = new();
+        public static ConcurrentDictionary<string, string> IotfdCards { get; private set; } = new();
+        public static ConcurrentDictionary<string, string> IotfdSigils { get; private set; } = new();
 
         private static List<string> previousSnapshot = new();
 
@@ -51,6 +56,14 @@ namespace KamWerksCardIndexCSharp.Notion
             var DmcSigilPagesList = new List<string>();
             DmcSigilPagesList = await FetchAllPageIds(client, "ae46b70d77e649d78a94d2fc62a886e0");
             DmcSigils = await FetchPageNamesAndStore(client, DmcSigilPagesList, "Sigil", DmcSigilNames);
+            
+            var IotfdCardPagesList = new List<string>();
+            IotfdCardPagesList = await FetchAllPageIds(client, "8918fd0a983540308f80f131655db3d3");
+            IotfdCards = await FetchPageNamesAndStore(client, IotfdCardPagesList, "Card", IotfdCardNames);
+
+            var IotfdSigilPagesList = new List<string>();
+            IotfdSigilPagesList = await FetchAllPageIds(client, "aa7158c620e14c1bade56faa7c09cd63");
+            IotfdSigils = await FetchPageNamesAndStore(client, IotfdSigilPagesList, "Sigil", IotfdSigilNames);
 
             logger.Info("Notion data retrieval completed successfully.");
         }

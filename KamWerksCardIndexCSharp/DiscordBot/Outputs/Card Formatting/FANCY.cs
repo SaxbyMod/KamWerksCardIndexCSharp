@@ -30,6 +30,12 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 			return outputTest;
 		}
 		
+		public async static Task<(DiscordMessageBuilder mess, string takeout)> IOTFD(int iterator30, string[] formattedcontent, string additionalproperties)
+		{
+			var outputTest = await Fancy_IOTFD.IOTFD(iterator30, formattedcontent, additionalproperties);
+			return outputTest;
+		}
+		
 		public async static Task<(DiscordMessageBuilder mess, string takeout)> CTISigil(int iterator30, string[] formattedcontent)
 		{
 			var outputTest = await Fancy_CTI_Sigil.CTI(iterator30, formattedcontent);
@@ -39,6 +45,11 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs
 		public async static Task<(DiscordMessageBuilder mess, string takeout)> DMCSigil(int iterator30, string[] formattedcontent)
 		{
 			var outputTest = await Fancy_DMC_Sigil.DMC(iterator30, formattedcontent);
+			return outputTest;
+		}
+		public async static Task<(DiscordMessageBuilder mess, string takeout)> IOTFDSigil(int iterator30, string[] formattedcontent)
+		{
+			var outputTest = await Fancy_IOTFD_Sigil.IOTFD(iterator30, formattedcontent);
 			return outputTest;
 		}
 	}

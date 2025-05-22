@@ -34,6 +34,11 @@ namespace KamWerksCardIndexCSharp.Notion
             {
 	            id = NotionEnd.DmcCards.GetValueOrDefault(name);
             }
+
+            if (set == "IOTFD")
+            {
+                id = NotionEnd.IotfdCards.GetValueOrDefault(name);
+            }
             if (string.IsNullOrEmpty(id))
             {
                 logger.Error($"No page ID found for {name}. Please ensure it's mapped correctly.");
