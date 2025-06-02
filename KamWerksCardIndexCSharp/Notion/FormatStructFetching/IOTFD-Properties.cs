@@ -36,7 +36,7 @@ namespace KamWerksCardIndexCSharp.Notion.FormatStructFetching
 				string id = "";
 				logger.Error($"Fetching information for {type}: {name}...");
 
-				id = NotionEnd.DmcCards.GetValueOrDefault(name);
+				id = NotionEnd.IotfdCards.GetValueOrDefault(name);
 				if (string.IsNullOrEmpty(id))
 				{
 					logger.Error($"No page ID found for {name}. Please ensure it's mapped correctly.");
@@ -115,7 +115,7 @@ namespace KamWerksCardIndexCSharp.Notion.FormatStructFetching
 				string id = "";
 				logger.Error($"Fetching information for {type}: {name}...");
 
-				id = NotionEnd.DmcSigils.GetValueOrDefault(name);
+				id = NotionEnd.IotfdSigils.GetValueOrDefault(name);
 				
 				if (string.IsNullOrEmpty(id))
 				{

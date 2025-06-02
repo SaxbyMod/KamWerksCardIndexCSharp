@@ -52,15 +52,15 @@ namespace KamWerksCardIndexCSharp.Notion
             var textBlocks = new List<string>();
 
             // Query blocks related to the page
-            var blocks = await notionClient.Blocks.RetrieveChildrenAsync(id); // Query for blocks related to the page.
-
+            var blocks = await notionClient.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest { BlockId = id }); // Query for blocks related to the page.
+            
             // Iterate over the blocks if they exist
             foreach (var block in blocks.Results)
             {
-                var newblocks = notionClient.Blocks.RetrieveChildrenAsync(block.Id).Result;
+                var newblocks = await notionClient.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest { BlockId = block.Id});
                 foreach (var myblock in newblocks.Results)
                 {
-                    var newblocks2 = notionClient.Blocks.RetrieveChildrenAsync(myblock.Id).Result;
+                    var newblocks2 = await notionClient.Blocks.RetrieveChildrenAsync(new BlockRetrieveChildrenRequest { BlockId = myblock.Id });
                     foreach (var myblock2 in newblocks2.Results)
                     {
                         if (myblock2.GetType().Name == "ParagraphBlock")
