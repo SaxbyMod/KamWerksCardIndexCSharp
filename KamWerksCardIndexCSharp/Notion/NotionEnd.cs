@@ -94,7 +94,7 @@ namespace KamWerksCardIndexCSharp.Notion
             return pageIds;
         }
 
-        public static async Task<T> RetryWithBackoff<T>(Func<Task<T>> action, int maxRetries = 50)
+        public static async Task<T> RetryWithBackoff<T>(Func<Task<T>> action)
         {
             int retryCount = 0;
             int delay = 1000;

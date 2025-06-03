@@ -17,9 +17,10 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Commands
 
 			if (message.Replace("|", "").Contains("Recache"))
 			{
+				await context.RespondAsync("Running Recache, please wait until the next message is sent.");
 				await NotionEnd.NotionMain();
 				var messageOutput = "Admin Command: " + "Recache" + " has completed";
-				await context.RespondAsync(messageOutput);
+				await context.FollowupAsync(messageOutput);
 			}
 			return;
 		}
