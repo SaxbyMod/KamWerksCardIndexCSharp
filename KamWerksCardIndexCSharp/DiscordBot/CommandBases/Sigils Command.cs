@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using KamWerksCardIndexCSharp.Helpers;
 using KamWerksCardIndexCSharp.Notion;
 
-namespace KamWerksCardIndexCSharp.DiscordBot.Commands
+namespace KamWerksCardIndexCSharp.DiscordBot.CommandBases
 {
 	public class Sigils_Command
 	{

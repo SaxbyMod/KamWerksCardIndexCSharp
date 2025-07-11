@@ -5,9 +5,9 @@ using DSharpPlus.Commands.Processors.TextCommands;
 using DSharpPlus.Commands.Processors.TextCommands.Parsing;
 using DSharpPlus.Commands.Trees;
 using DSharpPlus.Entities;
-using KamWerksCardIndexCSharp.DiscordBot.Commands;
-using KamWerksCardIndexCSharp.DiscordBot.Outputs.Fancy_Format;
-using KamWerksCardIndexCSharp.DiscordBot.Outputs.Test_Format;
+using KamWerksCardIndexCSharp.DiscordBot.CommandBases;
+using KamWerksCardIndexCSharp.DiscordBot.Commands.Fancy_Format;
+using KamWerksCardIndexCSharp.DiscordBot.Commands.Test_Format;
 using KamWerksCardIndexCSharp.Helpers;
 using KamWerksCardIndexCSharp.Notion;
 using SixLabors.ImageSharp.PixelFormats;
@@ -198,20 +198,22 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 		}
 
 		[Command("FetchCard")]
-		public async Task FetchCardAsync(CommandContext context, [SlashChoiceProvider<SetsProvider>] string set, string cardname, [SlashChoiceProvider<TypeProvider>] string type, [SlashChoiceProvider<OverloadsProvider>] string overloads)
+		public async Task FetchCardAsync(CommandContext context, [SlashChoiceProvider<SetsProvider>] string set, string name, [SlashChoiceProvider<TypeProvider>] string type, [SlashChoiceProvider<OverloadsProvider>] string overloads)
 		{
-			context.RespondAsync("Fetching card: " + cardname + " from set: " + set + ". Please wait!");
-			string[] request = new string[] { "", "" };
+			context.RespondAsync("Fetching card: " + name + " from set: " + set + "with overloads: " + overloads + ". Please wait!");
+			string[] request = new string[] { "", "", "", "" };
 			request[0] = set;
-			request[1] = cardname;
+			request[1] = Capitalization.CapitalizeWithSpaces(name);
+			request[2] = type;
+			request[3] = overloads;
 			int iterator30 = 0;
 			if (set == "CTI")
 			{
 				if (type == "FANCY" || string.IsNullOrEmpty(type))
 				{
-					if (NotionEnd.CtiCardNames.Contains(cardname))
+					if (NotionEnd.CtiCardNames.Contains(name))
 					{
-						var outputTest = await Fancy_CTI.CTI(iterator30, request, overloads);
+						var outputTest = await Fancy_CTI.CTI(iterator30, request, overloads.ToUpper());
 						var messageOutput = outputTest.mess;
 						messageOutput.Content = outputTest.takeout;
 						await context.FollowupAsync(messageOutput);
@@ -220,7 +222,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 
 				if (type == "TEST")
 				{
-					if (NotionEnd.CtiCardNames.Contains(cardname))
+					if (NotionEnd.CtiCardNames.Contains(name))
 					{
 						var outputTest = await Test_CTI.CTI(request, iterator30);
 						var messageOutput = outputTest.mess;
@@ -233,9 +235,9 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 			{
 				if (type == "FANCY" || string.IsNullOrEmpty(type))
 				{
-					if (NotionEnd.DmcCardNames.Contains(cardname))
+					if (NotionEnd.DmcCardNames.Contains(name))
 					{
-						var outputTest = await Fancy_DMC.DMC(iterator30, request, overloads);
+						var outputTest = await Fancy_DMC.DMC(iterator30, request, overloads.ToUpper());
 						var messageOutput = outputTest.mess;
 						messageOutput.Content = outputTest.takeout;
 						await context.FollowupAsync(messageOutput);
@@ -244,7 +246,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 
 				if (type == "TEST")
 				{
-					if (NotionEnd.DmcCardNames.Contains(cardname))
+					if (NotionEnd.DmcCardNames.Contains(name))
 					{
 						var outputTest = await Test_DMC.DMC(request, iterator30);
 						var messageOutput = outputTest.mess;
@@ -257,9 +259,9 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 			{
 				if (type == "FANCY" || string.IsNullOrEmpty(type))
 				{
-					if (NotionEnd.IotfdCardNames.Contains(cardname))
+					if (NotionEnd.IotfdCardNames.Contains(name))
 					{
-						var outputTest = await Fancy_IOTFD.IOTFD(iterator30, request, overloads);
+						var outputTest = await Fancy_IOTFD.IOTFD(iterator30, request, overloads.ToUpper());
 						var messageOutput = outputTest.mess;
 						messageOutput.Content = outputTest.takeout;
 						await context.FollowupAsync(messageOutput);
@@ -268,7 +270,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 
 				if (type == "TEST")
 				{
-					if (NotionEnd.IotfdCardNames.Contains(cardname))
+					if (NotionEnd.IotfdCardNames.Contains(name))
 					{
 						var outputTest = await Test_IOTFD.IOTFD(request, iterator30);
 						var messageOutput = outputTest.mess;
@@ -280,18 +282,18 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 		}
 		
 		[Command("FetchSigil")]
-		public async Task FetchSigilAsync(CommandContext context, [SlashChoiceProvider<SetsProvider>] string set, string cardname, [SlashChoiceProvider<TypeProvider>] string type)
+		public async Task FetchSigilAsync(CommandContext context, [SlashChoiceProvider<SetsProvider>] string set, string name, [SlashChoiceProvider<TypeProvider>] string type)
 		{
-			context.RespondAsync("Fetching sigil: " + cardname + " from set: " + set + ". Please wait!");
+			context.RespondAsync("Fetching sigil: " + name + " from set: " + set + ". Please wait!");
 			string[] request = new string[] { "", "" };
 			request[0] = set;
-			request[1] = cardname;
+			request[1] = Capitalization.CapitalizeWithSpaces(name);;
 			int iterator30 = 0;
 			if (set == "CTI")
 			{
 				if (type == "FANCY" || string.IsNullOrEmpty(type))
 				{
-					if (NotionEnd.CtiSigilNames.Contains(cardname))
+					if (NotionEnd.CtiSigilNames.Contains(name))
 					{
 						var outputTest = await Fancy_CTI_Sigil.CTI(iterator30, request);
 						var messageOutput = outputTest.mess;
@@ -302,7 +304,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 
 				if (type == "TEST")
 				{
-					if (NotionEnd.CtiSigilNames.Contains(cardname))
+					if (NotionEnd.CtiSigilNames.Contains(name))
 					{
 						var outputTest = await Test_CTI_Sigil.CTI(request, iterator30);
 						var messageOutput = outputTest.mess;
@@ -315,7 +317,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 			{
 				if (type == "FANCY" || string.IsNullOrEmpty(type))
 				{
-					if (NotionEnd.DmcSigilNames.Contains(cardname))
+					if (NotionEnd.DmcSigilNames.Contains(name))
 					{
 						var outputTest = await Fancy_DMC_Sigil.DMC(iterator30, request);
 						var messageOutput = outputTest.mess;
@@ -326,7 +328,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 
 				if (type == "TEST")
 				{
-					if (NotionEnd.DmcSigilNames.Contains(cardname))
+					if (NotionEnd.DmcSigilNames.Contains(name))
 					{
 						var outputTest = await Test_DMC_Sigil.DMC(request, iterator30);
 						var messageOutput = outputTest.mess;
@@ -339,7 +341,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 			{
 				if (type == "FANCY" || string.IsNullOrEmpty(type))
 				{
-					if (NotionEnd.IotfdSigilNames.Contains(cardname))
+					if (NotionEnd.IotfdSigilNames.Contains(name))
 					{
 						var outputTest = await Fancy_IOTFD_Sigil.IOTFD(iterator30, request);
 						var messageOutput = outputTest.mess;
@@ -350,7 +352,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 
 				if (type == "TEST")
 				{
-					if (NotionEnd.IotfdSigilNames.Contains(cardname))
+					if (NotionEnd.IotfdSigilNames.Contains(name))
 					{
 						var outputTest = await Test_IOTFD_Sigil.IOTFD(request, iterator30);
 						var messageOutput = outputTest.mess;
