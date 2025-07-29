@@ -28,7 +28,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Commands.FullCard_Format
 				logger.Info($"FullCard: {value}");
 			}
 
-			var CardURL = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/Inscryption%20Overhaul%20-%20Final%20Duel%20Edition/{Capitalization.CapitalizeWithSpaces(iotfdPropeties[3]).Replace(" ", "%20")}/{Capitalization.CapitalizeWithSpaces(iotfdPropeties[2]).Replace(" ", "")}.png";
+			var CardURL = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/Inscryption%20Overhaul%20-%20Final%20Duel%20Edition/{Capitalization.CapitalizeWithSpaces(iotfdPropeties[3]).Replace(" ", "%20")}/{Capitalization.CapitalizeWithSpaces(iotfdPropeties[2]).Replace(" ", "%20")}.png";
 
 			HttpClient httpClient = new();
 			httpClient.DefaultRequestHeaders.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue
