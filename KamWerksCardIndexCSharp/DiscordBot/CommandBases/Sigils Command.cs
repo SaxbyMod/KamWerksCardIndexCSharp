@@ -2,7 +2,6 @@ using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using KamWerksCardIndexCSharp.DiscordBot.Outputs;
-using KamWerksCardIndexCSharp.DiscordBot.Outputs.Test_Format;
 using System.Text.RegularExpressions;
 using KamWerksCardIndexCSharp.Helpers;
 using KamWerksCardIndexCSharp.Notion;
@@ -55,6 +54,13 @@ namespace KamWerksCardIndexCSharp.DiscordBot.CommandBases
 											messageOutput.Content = outputTest.takeout;
 											await eventArgs.Message.RespondAsync(messageOutput);
 										}
+										else if (formattedcontent[2] == Dicts.Formatting[2])
+										{
+											var outputTest = await FullCard.CTISigil(iterator30, formattedcontent);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
+										}
 										else
 										{
 											var outputTest = await FANCY.CTISigil(iterator30, formattedcontent);
@@ -85,9 +91,53 @@ namespace KamWerksCardIndexCSharp.DiscordBot.CommandBases
 											messageOutput.Content = outputTest.takeout;
 											await eventArgs.Message.RespondAsync(messageOutput);
 										}
+										else if (formattedcontent[2] == Dicts.Formatting[2])
+										{
+											var outputTest = await FullCard.DMCSigil(iterator30, formattedcontent);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
+										}
 										else
 										{
 											var outputTest = await FANCY.DMCSigil(iterator30, formattedcontent);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
+										}
+									}
+								}
+								else
+								{
+									DiscordMessageBuilder messageBuilder = new();
+									messageBuilder.Content = $"\n {formattedcontent[1]} was not found, try again!";
+									await eventArgs.Message.RespondAsync(messageBuilder);
+								}
+							}
+							else if (formattedcontent[0] == "IOTFD")
+							{
+								// Compare with trimmed content and case-insensitive
+								if (NotionEnd.IotfdSigilNames.Contains(formattedcontent[1], StringComparer.OrdinalIgnoreCase))
+								{
+									if (Dicts.Formatting.Contains(formattedcontent[2]))
+									{
+										if (formattedcontent[2] == Dicts.Formatting[0])
+										{
+											var outputTest = await Test.IOTFDSigil(formattedcontent, iterator30);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
+										}
+										else if (formattedcontent[2] == Dicts.Formatting[2])
+										{
+											var outputTest = await FullCard.IOTFDSigil(iterator30, formattedcontent);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
+										}
+										else
+										{
+											var outputTest = await FANCY.IOTFDSigil(iterator30, formattedcontent);
 											var messageOutput = outputTest.mess;
 											messageOutput.Content = outputTest.takeout;
 											await eventArgs.Message.RespondAsync(messageOutput);
@@ -130,6 +180,23 @@ namespace KamWerksCardIndexCSharp.DiscordBot.CommandBases
 								if (NotionEnd.DmcSigilNames.Contains(formattedcontent[1], StringComparer.OrdinalIgnoreCase))
 								{
 									var outputTest = await FANCY.DMCSigil(iterator30, formattedcontent);
+									var messageOutput = outputTest.mess;
+									messageOutput.Content = outputTest.takeout;
+									await eventArgs.Message.RespondAsync(messageOutput);
+								}
+								else
+								{
+									DiscordMessageBuilder messageBuilder = new();
+									messageBuilder.Content = $"\n {formattedcontent[1]} was not found, try again!";
+									await eventArgs.Message.RespondAsync(messageBuilder);
+								}
+							}
+							else if (formattedcontent[0] == "IOTFD")
+							{
+								// Compare with trimmed content and case-insensitive
+								if (NotionEnd.IotfdSigilNames.Contains(formattedcontent[1], StringComparer.OrdinalIgnoreCase))
+								{
+									var outputTest = await FANCY.IOTFDSigil(iterator30, formattedcontent);
 									var messageOutput = outputTest.mess;
 									messageOutput.Content = outputTest.takeout;
 									await eventArgs.Message.RespondAsync(messageOutput);

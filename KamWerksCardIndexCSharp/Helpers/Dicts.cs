@@ -15,7 +15,8 @@ namespace KamWerksCardIndexCSharp.Helpers
 		public static List<string> Formatting = new List<string>()
 		{
 			"TEST",
-			"FANCY"
+			"FANCY",
+			"FULLCARD"
 		};
 		
 		public static List<string> ResponseTypes = new List<string>()

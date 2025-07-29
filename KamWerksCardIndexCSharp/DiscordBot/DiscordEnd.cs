@@ -7,6 +7,7 @@ using DSharpPlus.Commands.Trees;
 using DSharpPlus.Entities;
 using KamWerksCardIndexCSharp.DiscordBot.CommandBases;
 using KamWerksCardIndexCSharp.DiscordBot.Commands.Fancy_Format;
+using KamWerksCardIndexCSharp.DiscordBot.Commands.FullCard_Format;
 using KamWerksCardIndexCSharp.DiscordBot.Commands.Test_Format;
 using KamWerksCardIndexCSharp.Helpers;
 using KamWerksCardIndexCSharp.Notion;
@@ -179,6 +180,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 			[
 				new DiscordApplicationCommandOptionChoice("Fancy", "FANCY"),
 				new DiscordApplicationCommandOptionChoice("Debug", "TEST"),
+				new DiscordApplicationCommandOptionChoice("Full Card", "FULLCARD"),
 			];
 
 			public ValueTask<IEnumerable<DiscordApplicationCommandOptionChoice>> ProvideAsync(CommandParameter parameter) => ValueTask.FromResult(types);
@@ -230,6 +232,17 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 						await context.FollowupAsync(messageOutput);
 					}
 				}
+				
+				if (type == "FULLCARD")
+				{
+					if (NotionEnd.CtiCardNames.Contains(name))
+					{
+						var outputFullCard = await FullCard_CTI.CTI(iterator30, request, overloads.ToUpper());
+						var messageOutput = outputFullCard.mess;
+						messageOutput.Content = outputFullCard.takeout;
+						await context.FollowupAsync(messageOutput);
+					}
+				}
 			}
 			if (set == "DMC")
 			{
@@ -254,6 +267,17 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 						await context.FollowupAsync(messageOutput);
 					}
 				}
+				
+				if (type == "FULLCARD")
+				{
+					if (NotionEnd.DmcCardNames.Contains(name))
+					{
+						var outputFullCard = await FullCard_DMC.DMC(iterator30, request, overloads.ToUpper());
+						var messageOutput = outputFullCard.mess;
+						messageOutput.Content = outputFullCard.takeout;
+						await context.FollowupAsync(messageOutput);
+					}
+				}
 			}
 			if (set == "IOTFD")
 			{
@@ -275,6 +299,17 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 						var outputTest = await Test_IOTFD.IOTFD(request, iterator30);
 						var messageOutput = outputTest.mess;
 						messageOutput.Content = outputTest.takeout;
+						await context.FollowupAsync(messageOutput);
+					}
+				}
+				
+				if (type == "FULLCARD")
+				{
+					if (NotionEnd.IotfdCardNames.Contains(name))
+					{
+						var outputFullCard = await FullCard_IOTFD.IOTFD(iterator30, request, overloads.ToUpper());
+						var messageOutput = outputFullCard.mess;
+						messageOutput.Content = outputFullCard.takeout;
 						await context.FollowupAsync(messageOutput);
 					}
 				}
@@ -312,6 +347,17 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 						await context.FollowupAsync(messageOutput);
 					}
 				}
+				
+				if (type == "FULLCARD" || string.IsNullOrEmpty(type))
+				{
+					if (NotionEnd.CtiSigilNames.Contains(name))
+					{
+						var outputTest = await FullCard_CTI_Sigil.CTI(iterator30, request);
+						var messageOutput = outputTest.mess;
+						messageOutput.Content = outputTest.takeout;
+						await context.FollowupAsync(messageOutput);
+					}
+				}
 			}
 			if (set == "DMC")
 			{
@@ -336,6 +382,17 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 						await context.FollowupAsync(messageOutput);
 					}
 				}
+				
+				if (type == "FULLCARD" || string.IsNullOrEmpty(type))
+				{
+					if (NotionEnd.DmcSigilNames.Contains(name))
+					{
+						var outputTest = await FullCard_DMC_Sigil.DMC(iterator30, request);
+						var messageOutput = outputTest.mess;
+						messageOutput.Content = outputTest.takeout;
+						await context.FollowupAsync(messageOutput);
+					}
+				}
 			}
 			if (set == "IOTFD")
 			{
@@ -355,6 +412,17 @@ namespace KamWerksCardIndexCSharp.DiscordBot
 					if (NotionEnd.IotfdSigilNames.Contains(name))
 					{
 						var outputTest = await Test_IOTFD_Sigil.IOTFD(request, iterator30);
+						var messageOutput = outputTest.mess;
+						messageOutput.Content = outputTest.takeout;
+						await context.FollowupAsync(messageOutput);
+					}
+				}
+				
+				if (type == "FULLCARD" || string.IsNullOrEmpty(type))
+				{
+					if (NotionEnd.IotfdSigilNames.Contains(name))
+					{
+						var outputTest = await FullCard_IOTFD_Sigil.IOTFD(iterator30, request);
 						var messageOutput = outputTest.mess;
 						messageOutput.Content = outputTest.takeout;
 						await context.FollowupAsync(messageOutput);

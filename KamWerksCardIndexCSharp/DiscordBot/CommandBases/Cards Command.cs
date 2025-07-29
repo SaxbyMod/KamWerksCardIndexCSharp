@@ -76,6 +76,12 @@ namespace KamWerksCardIndexCSharp.DiscordBot.CommandBases
 											var messageOutput = outputFancy.mess;
 											messageOutput.Content = outputFancy.takeout;
 											await eventArgs.Message.RespondAsync(messageOutput);
+										} else if (formattedcontent[2] == Dicts.Formatting[2])
+										{
+											var outputFancy = await FullCard.CTI(iterator30, formattedcontent, additionalproperties);
+											var messageOutput = outputFancy.mess;
+											messageOutput.Content = outputFancy.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
 										}
 									}
 								}
@@ -104,6 +110,12 @@ namespace KamWerksCardIndexCSharp.DiscordBot.CommandBases
 											var messageOutput = outputTest.mess;
 											messageOutput.Content = outputTest.takeout;
 											await eventArgs.Message.RespondAsync(messageOutput);
+										} else if (formattedcontent[2] == Dicts.Formatting[2])
+										{
+											var outputTest = await FullCard.DMC(iterator30, formattedcontent, additionalproperties);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
 										}
 									}
 								}
@@ -129,6 +141,12 @@ namespace KamWerksCardIndexCSharp.DiscordBot.CommandBases
 										} else if (formattedcontent[2] == Dicts.Formatting[1])
 										{
 											var outputTest = await FANCY.IOTFD(iterator30, formattedcontent, additionalproperties);
+											var messageOutput = outputTest.mess;
+											messageOutput.Content = outputTest.takeout;
+											await eventArgs.Message.RespondAsync(messageOutput);
+										} else if (formattedcontent[2] == Dicts.Formatting[2])
+										{
+											var outputTest = await FullCard.IOTFD(iterator30, formattedcontent, additionalproperties);
 											var messageOutput = outputTest.mess;
 											messageOutput.Content = outputTest.takeout;
 											await eventArgs.Message.RespondAsync(messageOutput);
