@@ -16,7 +16,7 @@
 
 ### Modifiers
 | Modier | Code | What It Does |
-|:-:|:-:|
+|:-:|:-:| :-: |
 | No Excess | NOEXCESS | Get rid of the tips that pop on for querying sigils on formats that dont have the def shown |
 | Sigil Inclusive | SIGILINCLUSIVE | Query the sigil with the card |
 
