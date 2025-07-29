@@ -28,7 +28,7 @@ namespace KamWerksCardIndexCSharp.DiscordBot.Outputs.FullCard_Format
 				logger.Info($"FullCard: {value}");
 			}
 
-			var CardURL = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/Custom%20TCG%20Inscryption/{Capitalization.CapitalizeWithSpaces(ctiProperties[3]).Replace(" ", "%20")}/{Capitalization.CapitalizeWithSpaces(ctiProperties[2]).Replace(" ", "")}.png";
+			var CardURL = $"https://raw.githubusercontent.com/SaxbyMod/NotionAssets/refs/heads/main/Formats/Custom%20TCG%20Inscryption/{Capitalization.CapitalizeWithSpaces(ctiProperties[3].Replace("Beasts", "Beast").Replace("Magicks", "Magick").Replace("Technology", "Tech")).Replace(" ", "%20")}/{Capitalization.CapitalizeWithSpaces(ctiProperties[2]).Replace(" ", "")}.png";
 
 			HttpClient httpClient = new();
 			httpClient.DefaultRequestHeaders.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue
